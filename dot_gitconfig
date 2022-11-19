@@ -1,0 +1,25 @@
+[user]
+	email = 16465863+gagadesu@users.noreply.github.com
+	name = gagadesu
+	; signingKey = CC2332077A5E59FE!
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHP1Jezi2rAvN5t7Lfy69ZXJIV8ESztN5TOa4B8DwPcZ
+[core]
+	excludesFile = ~/.gitignore
+	editor = nvim
+[init]
+	defaultBranch = main
+[gpg]
+  	format = ssh
+[gpg "ssh"]
+  	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+[commit]
+	gpgSign = true
+[tag]
+	gpgSign = true
+[maintenance]
+	repo = /Users/gagadesu/.znap/fast-syntax-highlighting
+	repo = /Users/gagadesu/.znap/zsh-autocomplete
+	repo = /Users/gagadesu/.znap/zsh-autosuggestions
+	repo = /Users/gagadesu/.znap/zsh-colored-man-pages
+	repo = /Users/gagadesu/.znap/zsh-completions
+	repo = /Users/gagadesu/.znap/zsh-snap

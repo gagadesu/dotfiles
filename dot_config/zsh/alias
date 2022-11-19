@@ -1,0 +1,82 @@
+if [ "$(uname -s)" = "Darwin" ]; then
+
+    # general
+    alias zrc="nv $HOME/.zshrc"
+    alias h="tldr" 
+    alias nv='nvim'
+    alias -g ...='../..'
+    alias -g ....='../../..'
+    alias -g .....='../../../..'
+    alias -g ......='../../../../..'
+
+    # directories
+    hash -d dld=~/Downloads
+    hash -d dev=~/Developer
+    hash -d dbx=~/Dropbox
+    hash -d sur=~/Library/Mobile\ Documents/iCloud~com~nssurge~inc/Documents
+    hash -d conf=~/.config
+    hash -d zsh=~/.config/zsh
+    hash -d nvl=~/.config/nvim/lua/user
+    hash -d cz=~/.local/share/chezmoi/
+    alias dus="du -smh * | sort -nr" # sort by size
+    alias lh='ls -d .*' # show hidden files/directories only
+    alias tgz='tar -czf' # compress file
+    alias ugz='tar -xzf' # decompress file
+
+    # exa
+    alias l="exa --sort Name"
+    alias ll="exa --sort Name --long"
+    alias la="exa --sort Name --long --all"
+    alias lr="exa --sort Name --long --recurse"
+    alias lra="exa --sort Name --long --recurse --all"
+    alias lt="exa --sort Name --long --tree"
+    alias lta="exa --sort Name --long --tree --all"
+
+    # docker
+    alias dc="docker compose"
+
+    # cloudflared
+    alias cfd="cloudflared"
+
+    # ssh
+    alias pve="ssh root@10.0.1.10"
+    alias ros="ssh gagadesu@10.0.1.1"
+    alias pve="ssh root@10.0.1.2"
+    alias nasr="ssh -R 52698:localhost:52698 -p 23022 root@10.0.1.5"
+    alias nas="ssh -R 52698:localhost:52698 -p 23022 gagadesu@10.0.1.5"
+    alias kr2="ssh gagadesu@146.56.111.23"
+    alias kr1="ssh gagadesu@150.230.248.199"
+    alias nw="ssh gagadesu@10.0.1.3"
+    alias ub="ssh gagadesu@10.0.1.7"
+    alias win="ssh -t gagadesu@10.0.1.7 powershell"
+
+    # network
+    alias pping='prettyping'
+    alias nq='networkQuality'
+    alias spt='speedtest'
+    alias sptcf='npx speed-cloudflare-cli'
+    alias sptf='npx fast-cli'
+
+    # homebrew
+    alias bi='brew install'
+    alias bd='brew update'
+    alias bg='brew upgrade'
+    alias ci='brew install --cask'
+    alias bui='brew uninstall'
+    alias cui='brew uninstall --cask'
+    alias bcu='brew cu'
+    alias bs='brew search'
+    alias bl='brew leaves'
+    alias budg='brew update && brew upgrade'
+    alias bc='brew cleanup'
+    alias bdc='brew doctor'
+    alias binf='brew info'
+    alias bo='brew outdated'
+
+    # yabai
+    alias yabairl='launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"'
+    alias yabairc='nvim ~/.config/yabai/yabairc'
+
+elif [ "$(uname -s)" = "Linux" ]; then
+
+fi

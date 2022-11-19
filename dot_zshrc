@@ -1,0 +1,122 @@
+# zmodload zsh/zprof
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
+# Fig pre block
+# homebrew
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
+alias brew="env PATH=\"${PATH/\/Users\/${USER}\/\.pyenv\/shims:/}\" brew"
+
+# zsh
+export ZSH=$HOME/.config/zsh
+source $ZSH/z.sh
+source $ZSH/alias
+source $ZSH/function
+# eval "$(starship init zsh)"
+export STARSHIP_CONFIG=$ZSH/starship.toml
+## znap
+[[ -f $HOME/.znap/zsh-snap/znap.zsh ]] ||
+    git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git $HOME/.znap/zsh-snap
+source $HOME/.znap/zsh-snap/znap.zsh
+## plugins
+znap source zsh-users/zsh-autosuggestions
+# znap source zsh-users/zsh-completions
+znap source ael-code/zsh-colored-man-pages
+znap source thirteen37/fzf-brew
+znap source jeffreytse/zsh-vi-mode
+# znap source marlonrichert/zsh-autocomplete
+znap source zsh-users/zsh-syntax-highlighting
+znap eval starship 'starship init zsh --print-full-init'
+znap prompt starship
+
+fpath=($HOME/.znap/zsh-completions/src $HOME/.znap/zsh-autosuggestions/src $fpath)
+autoload -Uz compinit && compinit
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export EDITOR="nvim"
+export TERM=xterm-256color
+export CLICOLOR=1
+export LSCOLORS=Gxfxcxdxbxegedabagacad
+export GREP_OPTIONS='--color=auto'
+export GREP_COLOR='3;33'
+export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+# export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152;export all_proxy=socks5://127.0.0.1:6153
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=$HOME/.cache/zsh_history
+HIST_STAMPS="yyyy-mm-dd"
+
+# zoxide
+eval "$(zoxide init zsh)"
+alias zz="z -"
+# docker
+## export DOCKER_HOST='tcp://127.0.0.1:2375'
+## export DOCKER_HOST=unix://$HOME/.lima/docker/sock/docker.sock
+## export DOCKER_HOST=unix://$HOME/.colima/default/docker.sock
+# lima
+## export LIMA_SHELL=/usr/bin/zsh
+## export LIMA_WORKDIR=/home/gagadesu.linux
+alias lin="lima nerdctl"
+alias lil="limactl"
+
+# go
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOPATH/bin
+
+# java
+# export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+# export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+## jenv
+export JENV_ROOT="$HOME/.jenv"
+if [ -d "${JENV_ROOT}" ]; then
+    export PATH="$JENV_ROOT/bin:$PATH"
+    eval "$(jenv init - --no-rehash)"
+    (jenv rehash &) 2> /dev/null
+fi
+
+# nodejs
+## n
+export N_PREFIX=$HOME/.n
+export PATH=$N_PREFIX/bin:$PATH
+
+# python
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+alias py3="python3"
+alias py2="python2"
+
+# rust
+. "$HOME/.cargo/env"
+
+# ruby
+eval "$(rbenv init - zsh)"
+
+# r
+export R_HOME=/Library/Frameworks/R.framework/Resources
+
+# github
+export GPG_TTY=$(tty)
+gpgconf --launch gpg-agent
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#export FZF_DEFAULT_COMMAND='vim $(fzf)'
+export FZF_DEFAULT_OPTS='--reverse --border'
+
+# thefuck
+eval $(thefuck --alias)
+
+# PATH
+export PATH="/Users/gagadesu/.bin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+# zprof
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# export SDKMAN_DIR="$HOME/.sdkman"
+# [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
