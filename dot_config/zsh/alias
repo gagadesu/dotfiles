@@ -1,7 +1,12 @@
 if [ "$(uname -s)" = "Darwin" ]; then
 
     # general
-    alias zrc="nv $HOME/.zshrc"
+    alias zrc="chezmoi edit ~/.zshrc"
+    alias als="chezmoi edit ~/.config/zsh/alias"
+    alias sshrc="chezmoi edit ~/.ssh/config"
+    alias trc="chezmoi edit ~/.tmux.conf"
+    alias cz="chezmoi"
+    alias czdf="chezmoi diff --exclude=encrypted"
     alias h="tldr" 
     alias nv='nvim'
     alias -g ...='../..'
@@ -16,7 +21,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
     hash -d sur=~/Library/Mobile\ Documents/iCloud~com~nssurge~inc/Documents
     hash -d conf=~/.config
     hash -d zsh=~/.config/zsh
-    hash -d nvl=~/.config/nvim/lua/user
+    hash -d nvl=~/.local/share/chezmoi/dot_config/nvim/lua/user
     hash -d cz=~/.local/share/chezmoi/
     alias dus="du -smh * | sort -nr" # sort by size
     alias lh='ls -d .*' # show hidden files/directories only
