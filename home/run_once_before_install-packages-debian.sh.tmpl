@@ -1,0 +1,8 @@
+{{- if (or (eq .osid "linux-debian") (eq .osid "linux-ubuntu")) -}}
+#!/bin/bash
+
+sudo apt update
+sudo apt install -y neovim exa zoxide fzf curl wget net-tools zsh git
+curl -sS https://starship.rs/install.sh | sh
+chsh -s $(which zsh)
+{{ end -}}

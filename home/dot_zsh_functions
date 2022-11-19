@@ -1,0 +1,114 @@
+# clear history
+function clhist {
+    local HISTSIZE=0;
+}
+
+# reload zshrc with "."
+function _accept-line() {
+    if [[ $BUFFER == "." ]]; then
+        BUFFER="source $XDG_CONFIG_HOME/zsh/.zshrc"
+    fi
+zle .accept-line
+} 
+zle -N accept-line _accept-line
+
+# upload with transfer.sh
+tmp_up () {
+  local download_url=$(curl --upload-file ./$1 https://transfer.sh/$1)
+  echo "curl -o $1 $download_url"
+  echo "curl -o $1 $download_url" | pbcopy
+}
+
+# prepend sudo
+function prepend_sudo() {
+  if [[ $BUFFER != "sudo "* ]]; then
+    BUFFER="sudo $BUFFER"
+    CURSOR=CURSOR+5
+  fi
+}
+zle -N prepend_sudo
+bindkey '^p' prepend_sudo
+
+# xbin: serverless cli toolkit
+% function xbin() {
+  command="$1"
+  shift
+  args=( "$@" )
+  if [ -t 0 ]; then
+    curl -sS -X POST "https://xbin.io/${command}" -H "X-Args: ${args}"
+  else
+    curl -sS --data-binary @- "https://xbin.io/${command}" -H "X-Args: ${args}"
+  fi
+}
+
+# Checkout git branch
+function fbr() {
+	local branches branch
+	branches=$(git branch -vv) &&
+	branch=$(echo "$branches" | fzf +m) &&
+	git checkout $(echo "$branche" | awk '{print $1}' | sed "s/.*//")
+}
+
+# Checkout local and remote git branches
+function fbrm() {
+	local branches branch
+	branches=$(git branch --all | grep -v HEAD) &&
+	branch=$(echo "$branches" |
+	         fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+	git checkout $(echo "$branches" | sed "s/.*//" | sed "s#remotes/[^/]*/##")
+}
+
+# Git commit browser
+function fshow() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
+}
+
+# change worktree
+function cdworktree() {
+  git rev-parse &>/dev/null
+  if [ $? -ne 0 ]; then
+    echo fatal: Not a git repository.
+    return
+  fi
+  local selectedWorkTreeDir=`git worktree list | fzf | awk '{print $1}'`
+  if [ "$selectedWorkTreeDir" = "" ]; then
+    return
+  fi
+  cd ${selectedWorkTreeDir}
+}
+
+# show ip
+function ip() {
+  ip="$(ifconfig | grep 'inet.*netmask.*broadcast')"
+  lanip="$(echo $ip | awk '{print $2}')"
+  wanip="$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}')"
+  echo 'LAN IP: '$lanip
+  echo 'WAN IP: '$wanip
+  echo $wanip | pbcopy
+}
+
+# kill process
+function kp() {
+  local pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+    kp
+  fi
+}
+
+# fuzzy PATH
+function fp() {
+  local loc=$(echo $PATH | sed -e $'s/:/\\\n/g' | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:path]'")
+  if [[ -d $loc ]]; then
+    echo "$(rg --files $loc | rev | cut -d"/" -f1 | rev)" | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:exe] => ${loc}' >/dev/null"
+    fp
+  fi
+}
