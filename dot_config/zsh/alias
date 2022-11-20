@@ -77,6 +77,8 @@ if [ "$(uname -s)" = "Darwin" ]; then
     alias bdc='brew doctor'
     alias binf='brew info'
     alias bo='brew outdated'
+    alias bdp='brew deps'
+    alias bdpt='brew deps --tree'
 
     # yabai
     alias yabairl='launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"'

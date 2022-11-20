@@ -34,8 +34,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Compiled Python files
+# Python
 *.pyc
+.python-version
 
 # Compiled C++ files
 *.out
