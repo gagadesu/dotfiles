@@ -1,4 +1,4 @@
-{{- if eq .chezmoi.os "darwin" }}
+{{- if eq .chezmoi.hostname "MBP" }}
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zprofile.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zprofile.pre.zsh"
 {{- end }}
@@ -10,7 +10,16 @@ export LANGUAGE=en_US
 export LC_MONETARY=en_US.UTF-8
 export LC_TIME=en_US.UTF-8
 
-{{- if eq .chezmoi.os "darwin" }}
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=$XDG_CACHE_HOME/zsh/zsh_history
+HIST_STAMPS="yyyy-mm-dd"
+
+export TERM=xterm-256color
+export GREP_COLORS='ms=01;33'
+alias grep='grep --color=auto'
+
+{{- if eq .chezmoi.hostname "MBP" }}
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zprofile.post.zsh" ]] && builtin source "$HOME/.fig/shell/zprofile.post.zsh"
 {{- end }}
