@@ -2,6 +2,59 @@
 add_newline = false
 command_timeout = 1500
 
+format = """
+{{- if ne .chezmoi.os "darwin" }}
+$os\
+{{- end }}
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$aws\
+$c\
+$cmake\
+$conda\
+$docker_context\
+$gcloud\
+$golang\
+$java\
+$kotlin\
+$kubernetes\
+$lua\
+$nix_shell\
+$nodejs\
+$package\
+$php\
+$python\
+$rlang\
+$ruby\
+$rust\
+$swift\
+$terraform\
+\n$character
+"""
+right_format = """$time"""
+
+[os]
+format = '[$symbol](bold white) '   
+disabled = false
+
+[os.symbols]
+Amazon = ''
+Android = ''
+Arch = ''
+CentOS = ''
+Debian = ''
+Fedora = ''
+FreeBSD = ''
+NixOS = ''
+openSUSE = ''
+Raspbian = ''
+Redhat = ''
+Ubuntu = ''
+Windows = ''
+
 [username]
 format = ' [$user]($style) '
 style_user = "bold blue"
@@ -15,16 +68,32 @@ trim_at = "."
 ssh_only = true
 disabled = false
 
-# os icon
-# [env_var.STARSHIP_DISTRO]
-# format = '[$env_value](white)'
-# variable = "STARSHIP_DISTRO"
-# disabled = false
+#[env_var.STARSHIP_DISTRO]
+#format = '[$env_value](white)'
+#variable = "STARSHIP_DISTRO"
+#disabled = false
 
 [directory]
 truncation_length = 0
 truncate_to_repo = true
 truncation_symbol = "repo:"
+
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[x](bold red)"
+vicmd_symbol = "[<](bold green)"
+
+[cmd_duration]
+format = '\[[⏱ $duration]($style)\]'
+
+[time]
+disabled = false
+time_format = "%T" # Hour:Minute Format
+style = "bg:#1d2230"
+format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+
+[git_branch]
+format = '\[[$symbol$branch]($style)\]'
 
 [git_status]
 style = "white"
@@ -35,23 +104,17 @@ deleted = "x"
 
 [git_commit]
 commit_hash_length = 7
-# format = "[\\($hashtag\\)]($style) "
-# style = "bold green"
-# only_detached = true
-# tag_disabled = false
+format = "[\\($hashtag\\)]($style) "
+style = "bold green"
+only_detached = true
+tag_disabled = false
 tag_symbol = "🔖 "
-# disabled = false
+disabled = false
 
 [git_state]
 format = '[\($state( $progress_current of $progress_total)\)]($style) '
 cherry_pick = "[🍒 PICKING](bold red)"
 
-[character]
-success_symbol = "[>](bold green)"
-error_symbol = "[x](bold red)"
-vicmd_symbol = "[<](bold green)"
-
-# SYMBOLS
 [aws]
 format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
 
@@ -61,61 +124,21 @@ format = '\[[$symbol($version(-$name))]($style)\]'
 [cmake]
 format = '\[[$symbol($version)]($style)\]'
 
-[cmd_duration]
-format = '\[[⏱ $duration]($style)\]'
-
-[cobol]
-format = '\[[$symbol($version)]($style)\]'
-
 [conda]
 format = '\[[$symbol$environment]($style)\]'
 
-[crystal]
-format = '\[[$symbol($version)]($style)\]'
-
-[dart]
-format = '\[[$symbol($version)]($style)\]'
-
-[deno]
-format = '\[[$symbol($version)]($style)\]'
-
 [docker_context]
 format = '\[[$symbol]($style)\]'
-
-[dotnet]
-format = '\[[$symbol($version)(🎯 $tfm)]($style)\]'
-
-[elixir]
-format = '\[[$symbol($version \(OTP $otp_version\))]($style)\]'
-
-[elm]
-format = '\[[$symbol($version)]($style)\]'
-
-[erlang]
-format = '\[[$symbol($version)]($style)\]'
+only_with_files = true
+detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
 
 [gcloud]
 format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
 
-[git_branch]
-format = '\[[$symbol$branch]($style)\]'
-
 [golang]
 format = '\[[$symbol($version)]($style)\]'
 
-[haskell]
-format = '\[[$symbol($version)]($style)\]'
-
-[helm]
-format = '\[[$symbol($version)]($style)\]'
-
-[hg_branch]
-format = '\[[$symbol$branch]($style)\]'
-
 [java]
-format = '\[[$symbol($version)]($style)\]'
-
-[julia]
 format = '\[[$symbol($version)]($style)\]'
 
 [kotlin]
@@ -127,37 +150,16 @@ format = '\[[$symbol$context( \($namespace\))]($style)\]'
 [lua]
 format = '\[[$symbol($version)]($style)\]'
 
-[memory_usage]
-format = '\[$symbol[$ram( | $swap)]($style)\]'
-
-[nim]
-format = '\[[$symbol($version)]($style)\]'
-
 [nix_shell]
 format = '\[[$symbol$state( \($name\))]($style)\]'
 
 [nodejs]
 format = '\[[$symbol($version)]($style)\]'
 
-[ocaml]
-format = '\[[$symbol($version)(\($switch_indicator$switch_name\))]($style)\]'
-
-[openstack]
-format = '\[[$symbol$cloud(\($project\))]($style)\]'
-
 [package]
 format = '\[[$symbol$version]($style)\]'
 
-[perl]
-format = '\[[$symbol($version)]($style)\]'
-
 [php]
-format = '\[[$symbol($version)]($style)\]'
-
-[pulumi]
-format = '\[[$symbol$stack]($style)\]'
-
-[purescript]
 format = '\[[$symbol($version)]($style)\]'
 
 [python]
@@ -166,39 +168,15 @@ format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
 [rlang]
 format = "with [📐 $version](blue bold) "
 
-[red]
-format = '\[[$symbol($version)]($style)\]'
-
 [ruby]
 format = '\[[$symbol($version)]($style)\]'
 
 [rust]
 format = '\[[$symbol($version)]($style)\]'
 
-[scala]
-format = '\[[$symbol($version)]($style)\]'
-
-[spack]
-format = '\[[$symbol$environment]($style)\]'
-
-[sudo]
-format = '\[[as $symbol]\]'
-
 [swift]
 format = '\[[$symbol($version)]($style)\]'
 
 [terraform]
 format = '\[[$symbol$workspace]($style)\]'
-
-[time]
-format = '\[[$time]($style)\]'
-
-[vagrant]
-format = '\[[$symbol($version)]($style)\]'
-
-[vlang]
-format = '\[[$symbol($version)]($style)\]'
-
-[zig]
-format = '\[[$symbol($version)]($style)\]'
 
