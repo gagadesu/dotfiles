@@ -23,8 +23,7 @@ if [ ! -f "$HOME/.local/bin/starship" ]; then
 fi
 
 # Prompt to install Docker
-{{- $installDocker := promptBool "Do you want to install Docker? (yes/no)" -}}
-{{- if $installDocker -}}
+{{- if .docker -}}
     # Your custom Docker installation script starts here
     sudo apt-get update
     sudo apt-get install -y ca-certificates curl gnupg
