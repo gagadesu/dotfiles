@@ -1,0 +1,61 @@
+{{- if (or (eq .osid "linux-debian") (eq .osid "linux-ubuntu")) -}}
+#!/bin/bash
+
+set -euo pipefail
+
+# Install general packages
+sudo apt update
+sudo apt install -y neovim zoxide fzf curl wget net-tools zsh git tmux gpg
+
+# Install eza
+if ! apt-key list | grep -q gierens; then
+    sudo mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+    sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    sudo apt update
+    sudo apt install -y eza
+fi
+
+# Install Starship
+if [ ! -f "$HOME/.local/bin/starship" ]; then
+    curl -sS https://starship.rs/install.sh | sh
+fi
+
+# Prompt to install Docker
+{{- $installDocker := promptBool "Do you want to install Docker? (yes/no)" -}}
+{{- if $installDocker -}}
+    # Your custom Docker installation script starts here
+    sudo apt-get update
+    sudo apt-get install -y ca-certificates curl gnupg
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+    . /etc/os-release
+    if [[ "$ID" == "ubuntu" ]]; then
+        echo "Adding Docker repository for Ubuntu..."
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $VERSION_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    elif [[ "$ID" == "debian" ]]; then
+        echo "Adding Docker repository for Debian..."
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $VERSION_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    else
+        echo "Unsupported OS"
+        exit 1
+    fi
+
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo usermod -aG docker ${USER}
+    echo "Docker installation complete!"
+    echo "Please log out and log back in to apply Docker group changes, or run the following command:"
+    echo "su - ${USER}"
+    # Your custom Docker installation script ends here
+{{- end -}}
+
+# Change the default shell to zsh
+if [ "$SHELL" != "$(which zsh)" ]; then
+    chsh -s "$(which zsh)"
+fi
+
+{{ end -}}
