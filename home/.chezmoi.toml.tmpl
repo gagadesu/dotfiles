@@ -17,13 +17,13 @@
 
 {{- if eq $hostname "thomas-mbp" -}}
 encryption = "gpg"
+[gpg]
+  recipient = "DF844F328F7941D4"
+{{- end }}
 [data]
   email = {{ $email | quote }}
   osid = {{ $osid | quote }}
   hostname = {{ $hostname | quote }}
-[gpg]
-  recipient = "DF844F328F7941D4"
 [diff]
   command = "nvim"
   args = ["-d"]
-{{- end -}}

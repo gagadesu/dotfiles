@@ -138,7 +138,7 @@ alias yabairc='nvim ~/.config/yabai/yabairc'
 {{ template "hostname" . }}
 {{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") -}}
 export PATH="$HOME/.local/bin:$PATH"
-{{- end -}}
+{{- end }}
 export MY_DOMAIN_NAME=gachca.com
 eval "$(zoxide init zsh)"
 alias zz="z -"
