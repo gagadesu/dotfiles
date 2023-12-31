@@ -20,15 +20,18 @@ encryption = "gpg"
 [gpg]
   recipient = "DF844F328F7941D4"
 {{- end }}
+
+[diff]
+  command = "nvim"
+  args = ["-d"]
 [data]
   email = {{ $email | quote }}
   osid = {{ $osid | quote }}
   hostname = {{ $hostname | quote }}
 
-{{- if (or (eq .osid "linux-debian") (eq .osid "linux-ubuntu")) }}
-{{- $docker := promptBool "Do you want to install Docker? (y/n)" -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   if (or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu")) -}}
+{{-   $docker := promptBool "Do you want to install Docker? (y/n)" }}
   docker = {{ $docker }}
-{{- end }}
-[diff]
-  command = "nvim"
-  args = ["-d"]
+{{-   end -}}
+{{- end -}}
