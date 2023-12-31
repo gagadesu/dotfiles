@@ -135,6 +135,8 @@ alias yabairc='nvim ~/.config/yabai/yabairc'
 {{- end }}
 
 # general
+{{ template "hostname" . }}
+export MY_DOMAIN_NAME=gachca.com
 eval "$(zoxide init zsh)"
 alias zz="z -"
 alias nv='nvim'

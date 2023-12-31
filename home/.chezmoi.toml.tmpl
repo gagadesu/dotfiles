@@ -5,16 +5,25 @@
 {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
 
+{{- $hostname := .chezmoi.hostname -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
+{{-   if eq $computerName "Thomas’ MacBook Pro" -}}
+{{-     $hostname = "thomas-mbp" -}}
+{{-   else -}}
+{{-     $hostname = $computerName -}}
+{{-   end -}}
+{{- end -}}
+
+{{- if eq $hostname "thomas-mbp" -}}
+encryption = "gpg"
 [data]
   email = {{ $email | quote }}
   osid = {{ $osid | quote }}
-
-{{- if eq $osid "darwin" }}
-encryption = "gpg"
+  hostname = {{ $hostname | quote }}
 [gpg]
   recipient = "DF844F328F7941D4"
-
 [diff]
   command = "nvim"
   args = ["-d"]
-{{- end }}
+{{- end -}}
