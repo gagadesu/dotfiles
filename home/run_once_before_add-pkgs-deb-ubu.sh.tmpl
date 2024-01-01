@@ -17,6 +17,13 @@ if ! apt-key list | grep -q gierens; then
     sudo apt install -y eza
 fi
 
+# Install tailscale
+if ! command -v tailscale >/dev/null 2>&1; then
+  curl -fsSL https://tailscale.com/install.sh | sh
+else
+  echo "Tailscale is already installed."
+fi
+
 # Install Starship
 if [ ! -f "$HOME/.local/bin/starship" ]; then
     curl -sS https://starship.rs/install.sh | sh
