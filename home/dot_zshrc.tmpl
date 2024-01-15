@@ -1,9 +1,5 @@
 #zmodload zsh/zprof
 {{- if eq .chezmoi.hostname "MBP" }}
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-# Fig pre block. Keep at the top of this file.
-
 # path
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
 {{- end }}
@@ -183,7 +179,5 @@ source $HOME/.zsh_functions
 # unset __conda_setup
 # # <<< conda initialize <<<
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 {{- end }}
 #zprof
