@@ -1,5 +1,8 @@
 #zmodload zsh/zprof
 {{- if eq .chezmoi.hostname "MBP" }}
+# CodeWhisperer pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.pre.zsh"
+
 # path
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
 {{- end }}
@@ -164,6 +167,7 @@ alias lta="eza --sort Name --long --octal-permissions --hyperlink --tree --all"
 alias gl="git log --pretty=format:'%C(yellow)%h%C(reset) - %C(green)%an%C(reset), %C(blue)%ar%C(reset) (%C(magenta)%ad%C(reset)) : %C(red)%s%C(reset)' --date=format:'%Y-%m-%d %H:%M:%S'"
 alias asb="ansible"
 alias apb="ansible-playbook"
+alias cl="clear"
 
 source $HOME/.zsh_functions
 {{ if eq .chezmoi.hostname "MBP" }}
@@ -182,5 +186,7 @@ source $HOME/.zsh_functions
 # unset __conda_setup
 # # <<< conda initialize <<<
 
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh"
 {{- end }}
 #zprof
