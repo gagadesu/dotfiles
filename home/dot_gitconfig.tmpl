@@ -1,9 +1,12 @@
 [user]
-{{- if eq .chezmoi.os "darwin" }}
   email = 16465863+gagadesu@users.noreply.github.com
   name = gagadesu
+{{- if eq .chezmoi.os "darwin" }}
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHP1Jezi2rAvN5t7Lfy69ZXJIV8ESztN5TOa4B8DwPcZ
   # signingKey = CC2332077A5E59FE!
+{{- end }}
+{{- if eq .hostname "rnd-lax-1" }}
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPkrFEz2Rwd3XBM4On1R+0wtP/ztxBnGExWk5/dz0mpd
 {{- end }}
 [core]
 	excludesFile = ~/.gitignore
