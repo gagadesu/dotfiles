@@ -9,13 +9,13 @@
 {{- if eq .chezmoi.os "darwin" -}}
 {{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
 {{-   if eq $computerName "Thomas’ MacBook Pro" -}}
-{{-     $hostname = "thomas-mbp" -}}
+{{-     $hostname = "mbp" -}}
 {{-   else -}}
 {{-     $hostname = $computerName -}}
 {{-   end -}}
 {{- end -}}
 
-{{- if eq $hostname "thomas-mbp" -}}
+{{- if eq $hostname "mbp" -}}
 encryption = "gpg"
 [gpg]
   recipient = "DF844F328F7941D4"

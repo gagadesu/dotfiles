@@ -1,9 +1,12 @@
 [user]
   email = 16465863+gagadesu@users.noreply.github.com
   name = gagadesu
-{{- if eq .chezmoi.os "darwin" }}
+{{- if eq .hostname "mbp" }}
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHP1Jezi2rAvN5t7Lfy69ZXJIV8ESztN5TOa4B8DwPcZ
   # signingKey = CC2332077A5E59FE!
+{{- end }}
+{{- if eq .hostname "mini" }}
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKv1dTMfCP+sY9MYNR2/CB5qQ7ECPhrAS17poiKPfSfH
 {{- end }}
 {{- if eq .hostname "nas" }}
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7F4UfWU/si0rPsYFAq/mWM/YdKHR+YvD4u6lT+KRS6
@@ -16,7 +19,7 @@
 	editor = nvim
 [init]
 	defaultBranch = main
-{{- if eq .chezmoi.os "darwin" }}
+{{- if eq .hostname "mbp" }}
 [gpg]
   format = ssh
 [gpg "ssh"]
