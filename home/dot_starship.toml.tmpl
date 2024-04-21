@@ -3,7 +3,7 @@ add_newline = false
 command_timeout = 1500
 
 format = """
-{{- if ne .chezmoi.os "darwin" }}
+{{- if ne .hostname "mbp" }}
 $os\
 {{- end }}
 $username\
@@ -48,6 +48,7 @@ CentOS = ''
 Debian = ''
 Fedora = ''
 FreeBSD = ''
+Macos = ''
 NixOS = ''
 openSUSE = ''
 Raspbian = ''
