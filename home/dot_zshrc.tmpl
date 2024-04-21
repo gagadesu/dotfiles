@@ -1,10 +1,14 @@
 #zmodload zsh/zprof
-{{- if eq .chezmoi.hostname "MBP" }}
+{{- if eq .hostname "mbp" }}
 # CodeWhisperer pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.pre.zsh"
 
-# path
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
+{{- end }}
+
+{{- if eq .hostname "mini" }}
+#export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 {{- end }}
 
 # zsh
@@ -19,7 +23,7 @@ source $HOME/.znap/zsh-snap/znap.zsh
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-completions
 znap source ael-code/zsh-colored-man-pages
-{{- if eq .chezmoi.hostname "MBP" }}
+{{- if eq .osid "darwin" }}
 znap source thirteen37/fzf-brew
 {{- end }}
 znap source jeffreytse/zsh-vi-mode
@@ -33,7 +37,7 @@ autoload -Uz compinit && compinit
 #znap prompt starship
 export STARSHIP_CONFIG=$HOME/.starship.toml
 eval "$(starship init zsh)"
-{{ if eq .chezmoi.hostname "MBP" }}
+{{ if eq .osid "darwin" }}
 # network
 export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152;export all_proxy=socks5://127.0.0.1:6153
 alias nq='networkQuality'
@@ -51,6 +55,26 @@ hash -d cz=$XDG_DATA_HOME/chezmoi/
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS='--reverse --border'
 
+# homebrew
+alias brew="env PATH=\"${PATH/\/Users\/${USER}\/\.pyenv\/shims:/}\" brew"
+alias bi='brew install'
+alias bd='brew update'
+alias bg='brew upgrade'
+alias ci='brew install --cask'
+alias bui='brew uninstall'
+alias cui='brew uninstall --cask'
+alias bcu='brew cu'
+alias bs='brew search'
+alias bl='brew leaves'
+alias budg='brew update && brew upgrade'
+alias bc='brew cleanup'
+alias bdc='brew doctor'
+alias binf='brew info'
+alias bo='brew outdated'
+alias bdp='brew deps'
+alias bdpt='brew deps --tree'
+{{- end }}
+{{ if eq .hostname "mbp" }}
 # gpg
 export GPG_TTY=$(tty)
 gpgconf --launch gpg-agent
@@ -106,25 +130,6 @@ alias clm="colima"
 #export LIMA_SHELL=/usr/bin/zsh
 #export LIMA_WORKDIR=/home/gagadesu.linux
 
-# homebrew
-alias brew="env PATH=\"${PATH/\/Users\/${USER}\/\.pyenv\/shims:/}\" brew"
-alias bi='brew install'
-alias bd='brew update'
-alias bg='brew upgrade'
-alias ci='brew install --cask'
-alias bui='brew uninstall'
-alias cui='brew uninstall --cask'
-alias bcu='brew cu'
-alias bs='brew search'
-alias bl='brew leaves'
-alias budg='brew update && brew upgrade'
-alias bc='brew cleanup'
-alias bdc='brew doctor'
-alias binf='brew info'
-alias bo='brew outdated'
-alias bdp='brew deps'
-alias bdpt='brew deps --tree'
-
 # aliases
 alias ala="alacritty"
 alias dasl="sudo rm -rf /private/var/log/asl/*.asl"
@@ -170,7 +175,7 @@ alias apb="ansible-playbook"
 alias cl="clear"
 
 source $HOME/.zsh_functions
-{{ if eq .chezmoi.hostname "MBP" }}
+{{ if eq .hostname "mbp" }}
 # # >>> conda initialize >>>
 # # !! Contents within this block are managed by 'conda init' !!
 # __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
