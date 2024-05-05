@@ -19,10 +19,12 @@ export TERM=xterm-256color
 export GREP_COLORS='ms=01;33'
 alias grep='grep --color=auto'
 
-{{- if eq .chezmoi.hostname "MBP" }}
+{{- if eq .osid "darwin" }}
 # Added by OrbStack: command-line tools and integration
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+{{- end }}
 
+{{- if eq .chezmoi.hostname "MBP" }}
 # CodeWhisperer post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh"
 {{- end }}
