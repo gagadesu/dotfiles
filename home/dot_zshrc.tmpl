@@ -145,7 +145,7 @@ export PATH=$HOME/Developer/work/tools/gradle-2.4/bin:$PATH
 # general
 {{ template "hostname" . }}
 {{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") }}
-export PATH="$HOME/.local/bin:$PATH"
+export PATH=$(find $HOME/.local/bin -type d -name "bin" -print0 | xargs -0 printf "%s:" | sed 's/:$//'):$PATH
 {{- end }}
 export MY_DOMAIN_NAME=gachca.com
 export UID=$(id -u)
