@@ -158,6 +158,10 @@ export TZ=$(timedatectl show -p Timezone --value)
 {{- end }}
 eval "$(zoxide init zsh)"
 alias zz="z -"
+alias cl="clear"
+alias tm="tmux"
+alias tmn="tmux new"
+alias tmk="tmux kill-session -t"
 alias nv='nvim'
 alias path="print -l $path"
 alias cz="chezmoi"
@@ -180,7 +184,6 @@ alias lta="eza --sort Name --long --octal-permissions --hyperlink --tree --all"
 alias gl="git log --pretty=format:'%C(yellow)%h%C(reset) - %C(green)%an%C(reset), %C(blue)%ar%C(reset) (%C(magenta)%ad%C(reset)) : %C(red)%s%C(reset)' --date=format:'%Y-%m-%d %H:%M:%S'"
 alias asb="ansible"
 alias apb="ansible-playbook"
-alias cl="clear"
 
 source $HOME/.zsh_functions
 {{ if eq .hostname "mbp" }}
