@@ -5,7 +5,14 @@ set -euo pipefail
 
 # Install general packages
 sudo apt update
-sudo apt install -y neovim zoxide fzf curl wget net-tools zsh git tmux gpg
+sudo apt install -y neovim zoxide fzf curl wget net-tools zsh git tmux gpg ripgrep gcc
+
+# Install TPM
+if command -v tmux &> /dev/null; then
+  if [ ! -d "$XDG_CONFIG_HOME/tmux/plugins" ]; then
+    git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
+  fi
+fi
 
 # Install eza
 if ! apt-key list | grep -q gierens; then
