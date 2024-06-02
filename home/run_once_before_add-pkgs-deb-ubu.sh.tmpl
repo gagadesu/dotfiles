@@ -1,7 +1,10 @@
-{{- if (or (eq .osid "linux-debian") (eq .osid "linux-ubuntu")) -}}
+{{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") -}}
 #!/bin/bash
 
 set -euo pipefail
+
+# Refresh sudo credentials
+sudo -v
 
 # Install general packages
 sudo apt update
@@ -9,8 +12,8 @@ sudo apt install -y neovim zoxide fzf curl wget net-tools zsh git tmux gpg ripgr
 
 # Install TPM
 if command -v tmux &> /dev/null; then
-  if [ ! -d "$HOME/.config/tmux/plugins" ]; then
-    git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
+  if [ ! -d "${HOME}/.config/tmux/plugins" ]; then
+    git clone https://github.com/tmux-plugins/tpm ${HOME}/.config/tmux/plugins/tpm
   fi
 fi
 
@@ -32,45 +35,45 @@ else
 fi
 
 # Install Starship
-if [ ! -f "$HOME/.local/bin/starship" ]; then
-    curl -sS https://starship.rs/install.sh | sh
+if [ ! -f "${HOME}/.local/bin/starship" ]; then
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
 
-# Prompt to install Docker
+# Install Docker if required
 {{- if .docker -}}
-    if ! command -v docker >/dev/null 2>&1; then
-      sudo apt-get update
-      sudo apt-get install -y ca-certificates curl gnupg
-      sudo install -m 0755 -d /etc/apt/keyrings
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-      sudo chmod a+r /etc/apt/keyrings/docker.gpg
+if ! command -v docker >/dev/null 2>&1; then
+  sudo apt-get update
+  sudo apt-get install -y ca-certificates curl gnupg
+  sudo install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-      . /etc/os-release
-      if [[ "$ID" == "ubuntu" ]]; then
-          echo "Adding Docker repository for Ubuntu..."
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $VERSION_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      elif [[ "$ID" == "debian" ]]; then
-          echo "Adding Docker repository for Debian..."
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $VERSION_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      else
-          echo "Unsupported OS"
-          exit 1
-      fi
+  . /etc/os-release
+  if [[ "$ID" == "ubuntu" ]]; then
+    echo "Adding Docker repository for Ubuntu..."
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $VERSION_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  elif [[ "$ID" == "debian" ]]; then
+    echo "Adding Docker repository for Debian..."
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $VERSION_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  else
+    echo "Unsupported OS"
+    exit 1
+  fi
 
-      sudo apt-get update
-      sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-      sudo usermod -aG docker ${USER}
-      echo "Docker installation complete!"
-      echo "Please log out and log back in to apply Docker group changes, or run the following command:"
-      echo "su - ${USER}"
-    else
-      echo "Docker is already installed."
-    fi
-{{- end -}}
+  sudo apt-get update
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo usermod -aG docker ${USER}
+  echo "Docker installation complete!"
+  echo "Please log out and log back in to apply Docker group changes, or run the following command:"
+  echo "su - ${USER}"
+else
+  echo "Docker is already installed."
+fi
+{{- end }}
 
 # Change the default shell to zsh
 if [ "$SHELL" != "$(which zsh)" ]; then
-    chsh -s "$(which zsh)"
+  chsh -s "$(which zsh)"
 fi
 
-{{ end -}}
+{{- end }}
