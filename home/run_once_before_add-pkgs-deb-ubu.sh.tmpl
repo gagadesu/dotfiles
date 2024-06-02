@@ -9,8 +9,8 @@ sudo apt install -y neovim zoxide fzf curl wget net-tools zsh git tmux gpg ripgr
 
 # Install TPM
 if command -v tmux &> /dev/null; then
-  if [ ! -d "$XDG_CONFIG_HOME/tmux/plugins" ]; then
-    git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
+  if [ ! -d "$HOME/.config/tmux/plugins" ]; then
+    git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
   fi
 fi
 
