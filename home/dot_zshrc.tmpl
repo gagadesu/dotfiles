@@ -156,6 +156,7 @@ export TZ=$(readlink /etc/localtime | sed 's|.*/zoneinfo/||')
 {{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") }}
 export TZ=$(timedatectl show -p Timezone --value)
 {{- end }}
+export TZ=$(readlink /etc/localtime | awk -F'/zoneinfo/' '{print $2}')
 eval "$(zoxide init zsh)"
 alias zz="z -"
 alias cl="clear"

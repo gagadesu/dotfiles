@@ -14,6 +14,12 @@
 {{- if eq .hostname "rnd-lax-1" }}
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPkrFEz2Rwd3XBM4On1R+0wtP/ztxBnGExWk5/dz0mpd
 {{- end }}
+{{- if eq .osid "darwin" }}
+[http]
+  proxy = http://127.0.0.1:6152
+[https]
+  proxy = http://127.0.0.1:6152
+{{- end }}
 [core]
 	excludesFile = ~/.gitignore
 	editor = nvim
@@ -46,16 +52,13 @@
 	repo = ~/.znap/zsh-snap
   commit-graph = true
   gc = true
-[credential]
-	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 {{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") }}
 [credential "https://github.com"]
-        helper =
-        helper = !/usr/bin/gh auth git-credential
+  helper =
+  helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-        helper =
-        helper = !/usr/bin/gh auth git-credential
+  helper =
+  helper = !/usr/bin/gh auth git-credential
 {{- end }}
