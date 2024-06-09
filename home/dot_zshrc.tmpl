@@ -47,9 +47,6 @@ hash -d dld=~/Downloads
 hash -d dev=~/Developer
 hash -d dbx=~/Dropbox
 hash -d sur=~/Library/Mobile\ Documents/iCloud~com~nssurge~inc/Documents
-hash -d conf=$XDG_CONFIG_HOME
-hash -d nvl=$XDG_DATA_HOME/chezmoi/dot_config/nvim/lua/user
-hash -d cz=$XDG_DATA_HOME/chezmoi/
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -169,6 +166,10 @@ alias cz="chezmoi"
 alias czet="chezmoi execute-template"
 alias d="docker"
 alias dcud="docker compose up -d"
+alias dcudf="docker compose up -d --force-recreate"
+alias dcu="docker compose up"
+alias dcd="docker compose down"
+alias dcp="docker compose pull"
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
@@ -185,6 +186,11 @@ alias lta="eza --sort Name --long --octal-permissions --hyperlink --tree --all"
 alias gl="git log --pretty=format:'%C(yellow)%h%C(reset) - %C(green)%an%C(reset), %C(blue)%ar%C(reset) (%C(magenta)%ad%C(reset)) : %C(red)%s%C(reset)' --date=format:'%Y-%m-%d %H:%M:%S'"
 alias asb="ansible"
 alias apb="ansible-playbook"
+
+hash -d conf=$XDG_CONFIG_HOME
+hash -d cz=$XDG_DATA_HOME/chezmoi/
+hash -d nv=$XDG_DATA_HOME/chezmoi/home/dot_config/nvim/
+hash -d ct=$XDG_DATA_HOME/chezmoi/home/dot_config/containers/
 
 source $HOME/.zsh_functions
 {{ if eq .hostname "mbp" }}
