@@ -20,7 +20,7 @@ services:
       - LISTEN=0.0.0.0:8443
       - SERVER=127.0.0.1:${PORT}
       - TLS=gateway.icloud.com:443
-      - PASSWORD={PASSWORD}
+      - PASSWORD=${PASSWORD}
 
   # restarter:
   #   image: docker:cli
