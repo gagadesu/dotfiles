@@ -1,0 +1,24 @@
+services:
+  jellyfin:
+    {{- if eq .osid "darwin" }}
+    image: nyanmisaka/jellyfin:240401-arm64
+    {{- end }}
+    {{- if ne .osid "darwin" }}
+    image: nyanmisaka/jellyfin
+    {{- end }}
+    container_name: jellyfin
+    restart: always
+    network_mode: host
+    volumes:
+      {{- if eq .hostname "mini" }}
+      - /Volumes/Fusion/media:/media
+      {{- end }}
+      {{- if eq .hostname "nas" }}
+      - /mnt/media:/media
+      {{- end }}
+      - config:/config
+      - cache:/cache
+
+volumes:
+  config:
+  cache:

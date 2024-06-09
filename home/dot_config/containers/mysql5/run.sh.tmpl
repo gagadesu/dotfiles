@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Create .env
+read -p "MYSQL_DATABASE: " MYSQL_DATABASE
+read -p "MYSQL_USER: " MYSQL_USER
+read -p "MYSQL_PASSWORD: " MYSQL_PASSWORD
+echo "MYSQL_DATABASE=$MYSQL_DATABASE" >>.env
+echo "MYSQL_USER=$MYSQL_USER" >>.env
+echo "MYSQL_PASSWORD=$MYSQL_PASSWORD" >>.env

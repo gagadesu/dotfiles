@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+docker pull adguard/adguardhome:latest
+
+sudo mkdir /etc/systemd/resolved.conf.d
+sudo touch /etc/systemd/resolved.conf.d/adguardhome.conf
+sudo echo -e "[Resolve]\nDNS=127.0.0.1\nDNSStubListener=no" > /etc/systemd/resolved.conf.d/adguardhome.conf
+sudo mv /etc/resolv.conf /etc/resolv.conf.backup
+sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+systemctl restart systemd-resolved
+
+sudo netstat -plnt

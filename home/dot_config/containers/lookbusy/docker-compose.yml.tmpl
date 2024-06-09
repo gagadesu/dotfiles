@@ -1,0 +1,10 @@
+services:
+  lookbusy:
+    image: fogforest/lookbusy:latest
+    container_name: lookbusy
+    hostname: lookbusy
+    restart: always
+    environment:
+      - TZ=${TZ}
+      - CPU_UTIL=10-20
+      - CPU_CORE=1

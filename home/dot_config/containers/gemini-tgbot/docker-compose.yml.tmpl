@@ -1,0 +1,8 @@
+services:
+  gemini-tgbot:
+    image: gemini-tgbot
+    container_name: gemini-tgbot
+    environment:
+      - TELEGRAM_BOT_API_KEY=${TELEGRAM_BOT_API_KEY}
+      - GEMINI_API_KEYS=${GEMINI_API_KEYS}
+    restart: unless-stopped

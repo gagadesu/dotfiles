@@ -1,0 +1,12 @@
+#!/bin/bash
+
+dir_path="${XDG_CONFIG_HOME}/filebrowser"
+file_path="$dir_path/filebrowser.db"
+
+if [ ! -d "$dir_path" ]; then
+  mkdir -p "$dir_path"
+fi
+
+if [ ! -f "$file_path" ]; then
+  touch "$file_path"
+fi

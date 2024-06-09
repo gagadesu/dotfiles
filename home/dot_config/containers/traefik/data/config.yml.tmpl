@@ -1,0 +1,300 @@
+---
+http:
+  routers:
+    {{- if eq .hostname "home" }}
+    ros:
+      entryPoints:
+        - "https"
+      rule: "Host(`ros.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: ros
+    pve:
+      entryPoints:
+        - "https"
+      rule: "Host(`pve.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: pve
+    adguard:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: adguard
+    nas:
+      entryPoints:
+        - "https"
+      rule: "Host(`nas.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: nas
+    alist:
+      entryPoints:
+        - "https"
+      rule: "Host(`alist.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: alist
+    filebrowser:
+      entryPoints:
+        - "https"
+      rule: "Host(`filebrowser.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: filebrowser
+    qb:
+      entryPoints:
+        - "https"
+      rule: "Host(`qb.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: qb
+    ui:
+      entryPoints:
+        - "https"
+      rule: "Host(`ui.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: ui
+    hass:
+      entryPoints:
+        - "https"
+      rule: "Host(`hass.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: hass
+    plex:
+      entryPoints:
+        - "https"
+      rule: "Host(`plex.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: plex
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: jellyfin
+    tautulli:
+      entryPoints:
+        - "https"
+      rule: "Host(`tautulli.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: tautulli
+    homepage:
+      entryPoints:
+        - "https"
+      rule: "Host(`homepage.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: homepage
+    uptime-kuma:
+      entryPoints:
+        - "https"
+      rule: "Host(`uptime-kuma.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: uptime-kuma
+    grafana:
+      entryPoints:
+        - "https"
+      rule: "Host(`grafana.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: grafana
+    portainer:
+      entryPoints:
+        - "https"
+      rule: "Host(`portainer.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: portainer
+    gitea:
+      entryPoints:
+        - "https"
+      rule: "Host(`gitea.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: gitea
+    # pihole:
+    #   entryPoints:
+    #     - "https"
+    #   rule: "Host(`pihole.home.gachca.com`)"
+    #   middlewares:
+    #     - default-headers
+    #     - addprefix-pihole
+    #   tls: {}
+    #   service: pihole
+    {{- end }}
+
+  services:
+    {{- if eq .hostname "home" }}
+    ros:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.1"
+        passHostHeader: true
+    pve:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.2:8006"
+        passHostHeader: true
+    adguard:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.0.2"
+        passHostHeader: true
+    # pihole:
+    #   loadBalancer:
+    #     servers:
+    #       - url: "http://10.0.1.12:80"
+    #     passHostHeader: true
+    nas:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.5:9090"
+        passHostHeader: true
+    alist:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:5244"
+        passHostHeader: true
+    filebrowser:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:8085"
+        passHostHeader: true
+    qb:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:8989"
+        passHostHeader: true
+    ui:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.7:8443"
+        passHostHeader: true
+    hass:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.4:8123"
+        passHostHeader: true
+    plex:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:32400"
+        passHostHeader: true
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:8096"
+        passHostHeader: true
+    tautulli:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:8181"
+        passHostHeader: true
+    homepage:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:3002"
+        passHostHeader: true
+    uptime-kuma:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:3001"
+        passHostHeader: true
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:3003"
+        passHostHeader: true
+    portainer:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:9000"
+        passHostHeader: true
+    gitea:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.7:3000"
+        passHostHeader: true
+    {{- end }}
+
+  middlewares:
+    addprefix-pihole:
+      addPrefix:
+        prefix: "/admin"
+    https-redirect:
+      redirectScheme:
+        scheme: https
+
+    default-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - PUT
+        accessControlAllowHeaders: ["x-api-key, Origin, Authorization"]
+        accessControlAllowOriginList: "*"
+        accessControlAllowCredentials: true
+        accessControlMaxAge: 100
+        addVaryHeader: true
+
+    idrac:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    default-whitelist:
+      ipWhiteList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
+
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers

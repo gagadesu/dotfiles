@@ -1,0 +1,55 @@
+services:
+  rsshub:
+    image: diygod/rsshub:chromium-bundled
+    container_name: rsshub
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.rsshub.entrypoints=http"
+      - "traefik.http.routers.rsshub.rule=Host(`rsshub.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+      - "traefik.http.middlewares.rsshub-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.rsshub.middlewares=rsshub-https-redirect"
+      - "traefik.http.routers.rsshub-secure.entrypoints=https"
+      - "traefik.http.routers.rsshub-secure.rule=Host(`rsshub.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+      - "traefik.http.routers.rsshub-secure.tls=true"
+      - "traefik.http.routers.rsshub-secure.service=rsshub"
+      - "traefik.http.services.rsshub.loadbalancer.server.port=1200"
+      - "traefik.docker.network=proxy"
+    networks:
+      - proxy
+    ports:
+      - '1200:1200'
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: 'redis://redis:6379/'
+      # PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'  # marked
+      # INITIUM_USERNAME: ''
+      # INITIUM_PASSWORD: ''
+    depends_on:
+      - redis
+      # - browserless  # marked
+
+  # browserless:
+  #     image: browserless/chrome
+  #     restart: always
+  #     ulimits:
+  #       core:
+  #         hard: 0
+  #         soft: 0
+
+  redis:
+    image: redis:alpine
+    restart: always
+    networks:
+      - proxy
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+
+networks:
+  proxy:
+    external: true

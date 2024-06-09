@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Create .env
+read -p "CLOUDFLARE_EMAIL: " CLOUDFLARE_EMAIL
+read -p "CF_DNS_API_TOKEN: " CF_DNS_API_TOKEN
+read -p "TRAEFIK_DASHBOARD_CREDENTIALS: " TRAEFIK_DASHBOARD_CREDENTIALS
+echo "CLOUDFLARE_EMAIL=$CLOUDFLARE_EMAIL" >> .env
+echo "CF_DNS_API_TOKEN=$CF_DNS_API_TOKEN" >> .env
+echo "TRAEFIK_DASHBOARD_CREDENTIALS=$TRAEFIK_DASHBOARD_CREDENTIALS" >> .env
+
+# Create acme.json
+touch ./data/acme.json
+chmod 600 ./data/acme.json
+
+# Create docker proxy network if not exist
+if ! docker network inspect proxy &> /dev/null; then
+    docker network create proxy
+fi

@@ -1,0 +1,6 @@
+services:
+  cloudflared:
+    container_name: cloudflared
+    restart: always
+    command: tunnel --protocol quic --no-autoupdate run --token ${TOKEN}
+    image: cloudflare/cloudflared:latest

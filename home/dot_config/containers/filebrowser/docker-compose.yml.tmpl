@@ -1,0 +1,29 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    restart: always
+    volumes:
+      - ${HOME}:/srv
+      - ${XDG_CONFIG_HOME}/filebrowser/filebrowser.db:/database.db
+    user: ${UID}:${GID}
+    # networks:
+    #   - proxy
+    ports:
+      - 8098:80
+    # labels:
+    #  - "traefik.enable=true"
+    #  - "traefik.http.routers.filebrowser.entrypoints=http"
+    #  - "traefik.http.routers.filebrowser.rule=Host(`filebrowser.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+    #  - "traefik.http.middlewares.filebrowser-https-redirect.redirectscheme.scheme=https"
+    #  - "traefik.http.routers.filebrowser.middlewares=filebrowser-https-redirect"
+    #  - "traefik.http.routers.filebrowser-secure.entrypoints=https"
+    #  - "traefik.http.routers.filebrowser-secure.rule=Host(`filebrowser.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+    #  - "traefik.http.routers.filebrowser-secure.tls=true"
+    #  - "traefik.http.routers.filebrowser-secure.service=filebrowser"
+    #  - "traefik.http.services.filebrowser.loadbalancer.server.port=80"
+    #  - "traefik.docker.network=proxy"
+
+# networks:
+#   proxy:
+#     external: true

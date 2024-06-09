@@ -1,0 +1,43 @@
+services:
+  qb:
+    image: johngong/qbittorrent:latest
+    container_name: qb
+    environment:
+      - WEBUIPORT=8989
+      - UID=${UID}
+      - GID=${GID}
+      - UMASK=022
+    # networks:
+    #   - proxy
+    ports:
+      - '6881:6881'
+      - '6881:6881/udp'
+      - '8989:8989'
+    volumes:
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+      - 'config:/config'
+      {{- if eq .osid "darwin" }}
+      - '$HOME/Downloads:/Downloads'
+      {{- end }}
+      {{- if ne .osid "darwin"}}
+      - '$HOME/downloads:/Downloads'
+      {{- end }}
+    # labels:
+    #  - "traefik.enable=true"
+    #  - "traefik.http.routers.qb.entrypoints=http"
+    #  - "traefik.http.routers.qb.rule=Host(`qb.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+    #  - "traefik.http.middlewares.qb-https-redirect.redirectscheme.scheme=https"
+    #  - "traefik.http.routers.qb.middlewares=qb-https-redirect"
+    #  - "traefik.http.routers.qb-secure.entrypoints=https"
+    #  - "traefik.http.routers.qb-secure.rule=Host(`qb.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+    #  - "traefik.http.routers.qb-secure.tls=true"
+    #  - "traefik.http.routers.qb-secure.service=qb"
+    #  - "traefik.http.services.qb.loadbalancer.server.port=8989"
+    #  - "traefik.docker.network=proxy"
+
+volumes:
+  config:
+
+# networks:
+#   proxy:
+#     external: true

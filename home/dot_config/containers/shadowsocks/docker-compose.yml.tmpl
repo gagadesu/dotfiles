@@ -1,0 +1,20 @@
+services:
+  shadowsocks:
+    image: shadowsocks/shadowsocks-libev
+    restart: always
+    command: /bin/sh -c 'exec ss-server -s 0.0.0.0 -p 24000 -k 123456 -m chacha20-ietf-poly1305 -t 300'
+
+  # shadow-tls:
+  #   image: ghcr.io/ihciah/shadow-tls:latest
+  #   restart: always
+  #   ports:
+  #     - "9443:9443"
+  #   environment:
+  #     - MODE=server
+  #     # - V3=1
+  #     - LISTEN=0.0.0.0:9443
+  #     - SERVER=shadowsocks:24000
+  #     - TLS=cloud.tencent.com:443
+  #     - PASSWORD=123456
+  #   depends_on:
+  #     - shadowsocks

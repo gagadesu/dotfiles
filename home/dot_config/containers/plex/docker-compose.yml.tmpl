@@ -1,0 +1,21 @@
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=${UID}
+      - PGID={GID}
+      - TZ=${TZ}
+      - VERSION=docker
+    volumes:
+      - config:/config:rw
+      {{- if eq .hostname "mini" }}
+      - /Volumes/Fusion/media:/media
+      {{- end }}
+      {{- if eq .hostname "nas" }}
+      - /mnt/media:/media
+      {{- end }}
+
+volumes:
+  config:

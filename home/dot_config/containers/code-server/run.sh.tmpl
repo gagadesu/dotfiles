@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Create .env
+read -p "PASSWORD: " PASSWORD
+read -p "SUDO_PASSWORD: " SUDO_PASSWORD
+echo "PASSWORD=$PASSWORD" >>.env
+echo "SUDO_PASSWORD=$SUDO_PASSWORD" >>.env

@@ -1,0 +1,22 @@
+services:
+  xteve:
+    image: alturismo/xteve:latest
+    container_name: xteve
+    network_mode: host
+    logging:
+      options: 
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - "root:/root/.xteve:rw"
+      - "config:/config:rw"
+      - "tmp:/tmp/xteve:rw"
+      - "tvheadend:/TVH"
+
+volumes:
+  root:
+  config:
+  tmp:
+  tvheadend:

@@ -1,0 +1,8 @@
+services:
+  iperf3:
+    image: taoyou/iperf3-alpine:latest
+    container_name: iperf3
+    restart: always
+    ports:
+      - "5201:5201"
+    command: -s

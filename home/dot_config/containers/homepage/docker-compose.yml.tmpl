@@ -1,0 +1,15 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      PUID: ${UID}
+      PGID: ${GID}
+    ports:
+      - 3838:3000
+    volumes:
+      - config:/app/config
+    restart: unless-stopped
+
+volumes:
+  config:
