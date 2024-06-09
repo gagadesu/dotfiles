@@ -2,5 +2,5 @@
 zsh_history
 {{- if eq .chezmoi.os "linux" }}
 .alacritty.toml
-.hammerspoon/*
+.hammerspoon/
 {{- end }}
