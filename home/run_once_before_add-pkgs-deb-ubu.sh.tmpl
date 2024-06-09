@@ -10,6 +10,10 @@ sudo -v
 sudo apt update
 sudo apt install -y neovim zoxide fzf curl wget net-tools zsh git tmux gpg ripgrep gcc
 
+# Install nvim(>=v0.10.0)
+wget -P ${HOME}/.local/bin https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
+tar xzf ${HOME}/.local/bin/nvim-linux64.tar.gz -C ${HOME}/.local/bin/nvim
+
 # Install TPM
 if command -v tmux &> /dev/null; then
   if [ ! -d "${HOME}/.config/tmux/plugins" ]; then
