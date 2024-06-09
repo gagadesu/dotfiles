@@ -188,9 +188,8 @@ alias asb="ansible"
 alias apb="ansible-playbook"
 
 hash -d conf=$XDG_CONFIG_HOME
-hash -d cz=$XDG_DATA_HOME/chezmoi/
-hash -d nv=$XDG_DATA_HOME/chezmoi/home/dot_config/nvim/
-hash -d ct=$XDG_DATA_HOME/chezmoi/home/dot_config/containers/
+hash -d nv=$XDG_CONFIG_HOME/nvim/
+hash -d ct=$XDG_CONFIG_HOME/containers/
 
 source $HOME/.zsh_functions
 {{ if eq .hostname "mbp" }}
