@@ -8,25 +8,25 @@ services:
     volumes:
       - 'data:/opt/alist/data'
       - '${HOME}:/root'
-    # networks:
-    #   - proxy
+    networks:
+      - proxy
     labels:
      - "com.centurylinklabs.watchtower.enable=false"
-     # - "traefik.enable=true"
-     # - "traefik.http.routers.alist.entrypoints=http"
-     # - "traefik.http.routers.alist.rule=Host(`alist.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
-     # - "traefik.http.middlewares.alist-https-redirect.redirectscheme.scheme=https"
-     # - "traefik.http.routers.alist.middlewares=alist-https-redirect"
-     # - "traefik.http.routers.alist-secure.entrypoints=https"
-     # - "traefik.http.routers.alist-secure.rule=Host(`alist.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
-     # - "traefik.http.routers.alist-secure.tls=true"
-     # - "traefik.http.routers.alist-secure.service=alist"
-     # - "traefik.http.services.alist.loadbalancer.server.port=5244"
-     # - "traefik.docker.network=proxy"
+     - "traefik.enable=true"
+     - "traefik.http.routers.alist.entrypoints=http"
+     - "traefik.http.routers.alist.rule=Host(`alist.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.middlewares.alist-https-redirect.redirectscheme.scheme=https"
+     - "traefik.http.routers.alist.middlewares=alist-https-redirect"
+     - "traefik.http.routers.alist-secure.entrypoints=https"
+     - "traefik.http.routers.alist-secure.rule=Host(`alist.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.routers.alist-secure.tls=true"
+     - "traefik.http.routers.alist-secure.service=alist"
+     - "traefik.http.services.alist.loadbalancer.server.port=5244"
+     - "traefik.docker.network=proxy"
 
 volumes:
   data:
 
-# networks:
-#   proxy:
-#     external: true
+networks:
+  proxy:
+    external: true

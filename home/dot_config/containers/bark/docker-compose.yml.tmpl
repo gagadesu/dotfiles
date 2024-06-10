@@ -5,26 +5,26 @@ services:
     restart: always
     volumes:
       - data:/data
-    # networks:
-    #  - proxy
     ports:
       - "8416:8080"
-    # labels:
-    #  - "traefik.enable=true"
-    #  - "traefik.http.routers.bark.entrypoints=http"
-    #  - "traefik.http.routers.bark.rule=Host(`bark.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
-    #  - "traefik.http.middlewares.bark-https-redirect.redirectscheme.scheme=https"
-    #  - "traefik.http.routers.bark.middlewares=bark-https-redirect"
-    #  - "traefik.http.routers.bark-secure.entrypoints=https"
-    #  - "traefik.http.routers.bark-secure.rule=Host(`bark.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
-    #  - "traefik.http.routers.bark-secure.tls=true"
-    #  - "traefik.http.routers.bark-secure.service=bark"
-    #  - "traefik.http.services.bark.loadbalancer.server.port=8080"
-    #  - "traefik.docker.network=proxy"
+    networks:
+     - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.bark.entrypoints=http"
+     - "traefik.http.routers.bark.rule=Host(`bark.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.middlewares.bark-https-redirect.redirectscheme.scheme=https"
+     - "traefik.http.routers.bark.middlewares=bark-https-redirect"
+     - "traefik.http.routers.bark-secure.entrypoints=https"
+     - "traefik.http.routers.bark-secure.rule=Host(`bark.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.routers.bark-secure.tls=true"
+     - "traefik.http.routers.bark-secure.service=bark"
+     - "traefik.http.services.bark.loadbalancer.server.port=8080"
+     - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
 
 volumes:
   data:
-
-# networks:
-#   proxy:
-#     external: true

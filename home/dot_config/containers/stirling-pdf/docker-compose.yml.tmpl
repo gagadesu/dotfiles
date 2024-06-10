@@ -11,6 +11,24 @@ services:
       - DOCKER_ENABLE_SECURITY=false
       - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
       - LANGS=en_US
+    networks:
+     - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.pdf.entrypoints=http"
+     - "traefik.http.routers.pdf.rule=Host(`pdf.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.middlewares.pdf-https-redirect.redirectscheme.scheme=https"
+     - "traefik.http.routers.pdf.middlewares=pdf-https-redirect"
+     - "traefik.http.routers.pdf-secure.entrypoints=https"
+     - "traefik.http.routers.pdf-secure.rule=Host(`pdf.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.routers.pdf-secure.tls=true"
+     - "traefik.http.routers.pdf-secure.service=pdf"
+     - "traefik.http.services.pdf.loadbalancer.server.port=8080"
+     - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
 
 volumes:
   extraConfigs:

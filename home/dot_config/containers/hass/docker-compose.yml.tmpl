@@ -7,6 +7,24 @@ services:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     network_mode: host
+    # networks:
+    #  - proxy
+    # labels:
+    #  - "traefik.enable=true"
+    #  - "traefik.http.routers.hass.entrypoints=http"
+    #  - "traefik.http.routers.hass.rule=Host(`hass.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+    #  - "traefik.http.middlewares.hass-https-redirect.redirectscheme.scheme=https"
+    #  - "traefik.http.routers.hass.middlewares=hass-https-redirect"
+    #  - "traefik.http.routers.hass-secure.entrypoints=https"
+    #  - "traefik.http.routers.hass-secure.rule=Host(`hass.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+    #  - "traefik.http.routers.hass-secure.tls=true"
+    #  - "traefik.http.routers.hass-secure.service=hass"
+    #  - "traefik.http.services.hass.loadbalancer.server.port=8123"
+    #  - "traefik.docker.network=proxy"
+
+# networks:
+#   proxy:
+#     external: true
 
 volumes:
   config:

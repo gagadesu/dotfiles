@@ -34,30 +34,6 @@ http:
         - default-headers
       tls: {}
       service: nas
-    alist:
-      entryPoints:
-        - "https"
-      rule: "Host(`alist.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: alist
-    filebrowser:
-      entryPoints:
-        - "https"
-      rule: "Host(`filebrowser.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: filebrowser
-    qb:
-      entryPoints:
-        - "https"
-      rule: "Host(`qb.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: qb
     ui:
       entryPoints:
         - "https"
@@ -90,30 +66,6 @@ http:
         - default-headers
       tls: {}
       service: jellyfin
-    tautulli:
-      entryPoints:
-        - "https"
-      rule: "Host(`tautulli.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: tautulli
-    homepage:
-      entryPoints:
-        - "https"
-      rule: "Host(`homepage.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: homepage
-    uptime-kuma:
-      entryPoints:
-        - "https"
-      rule: "Host(`uptime-kuma.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: uptime-kuma
     grafana:
       entryPoints:
         - "https"
@@ -122,22 +74,6 @@ http:
         - default-headers
       tls: {}
       service: grafana
-    portainer:
-      entryPoints:
-        - "https"
-      rule: "Host(`portainer.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: portainer
-    gitea:
-      entryPoints:
-        - "https"
-      rule: "Host(`gitea.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: gitea
     # pihole:
     #   entryPoints:
     #     - "https"
@@ -176,25 +112,10 @@ http:
         servers:
           - url: "https://10.0.1.5:9090"
         passHostHeader: true
-    alist:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:5244"
-        passHostHeader: true
-    filebrowser:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:8085"
-        passHostHeader: true
-    qb:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:8989"
-        passHostHeader: true
     ui:
       loadBalancer:
         servers:
-          - url: "https://10.0.1.7:8443"
+          - url: "https://10.0.1.5:8443"
         passHostHeader: true
     hass:
       loadBalancer:
@@ -204,42 +125,17 @@ http:
     plex:
       loadBalancer:
         servers:
-          - url: "http://10.0.1.7:32400"
+          - url: "http://10.0.1.5:32400"
         passHostHeader: true
     jellyfin:
       loadBalancer:
         servers:
-          - url: "http://10.0.1.7:8096"
-        passHostHeader: true
-    tautulli:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:8181"
-        passHostHeader: true
-    homepage:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:3002"
-        passHostHeader: true
-    uptime-kuma:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:3001"
+          - url: "http://10.0.1.5:8096"
         passHostHeader: true
     grafana:
       loadBalancer:
         servers:
-          - url: "http://10.0.1.7:3003"
-        passHostHeader: true
-    portainer:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:9000"
-        passHostHeader: true
-    gitea:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.7:3000"
+          - url: "http://10.0.1.5:3003"
         passHostHeader: true
     {{- end }}
 

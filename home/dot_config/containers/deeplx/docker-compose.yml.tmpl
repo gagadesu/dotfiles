@@ -4,3 +4,21 @@ services:
     restart: always
     ports:
       - "1188:1188"
+    networks:
+     - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.deeplx.entrypoints=http"
+     - "traefik.http.routers.deeplx.rule=Host(`deeplx.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.middlewares.deeplx-https-redirect.redirectscheme.scheme=https"
+     - "traefik.http.routers.deeplx.middlewares=deeplx-https-redirect"
+     - "traefik.http.routers.deeplx-secure.entrypoints=https"
+     - "traefik.http.routers.deeplx-secure.rule=Host(`deeplx.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.routers.deeplx-secure.tls=true"
+     - "traefik.http.routers.deeplx-secure.service=deeplx"
+     - "traefik.http.services.deeplx.loadbalancer.server.port=1188"
+     - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
