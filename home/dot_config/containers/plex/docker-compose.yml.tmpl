@@ -5,7 +5,7 @@ services:
     network_mode: host
     environment:
       - PUID=${UID}
-      - PGID={GID}
+      - PGID=${GID}
       - TZ=${TZ}
       - VERSION=docker
     volumes:
