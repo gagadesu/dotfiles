@@ -1,14 +1,10 @@
 #!/bin/bash
 
 # Create .env
-read -p "GITEA__database__NAME: " GITEA__database__NAME
-read -p "GITEA__database__USER: " GITEA__database__USER
-read -p "GITEA__database__PASSWD: " GITEA__database__PASSWD
-read -p "POSTGRES_USER: " POSTGRES_USER
-read -p "POSTGRES_PASSWORD: " POSTGRES_PASSWORD
+read -p "DATABASE_NAME: " DATABASE_NAME
+read -p "DATABASE_USER: " DATABASE_USER
+read -p "DATABASE_PASSWORD: " DATABASE_PASSWORD
 
-echo "GITEA__database__NAME=$GITEA__database__NAME" >>.env
-echo "GITEA__database__USER=$GITEA__database__USER" >>.env
-echo "GITEA__database__PASSWD=$GITEA__database__PASSWD" >>.env
-echo "POSTGRES_USER=$POSTGRES_USER" >>.env
-echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >>.env
+echo "DATABASE_NAME=$DATABASE_NAME" >>.env
+echo "DATABASE_USER=$DATABASE_USER" >>.env
+echo "DATABASE_PASSWORD=$DATABASE_PASSWORD" >>.env
