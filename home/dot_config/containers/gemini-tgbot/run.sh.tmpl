@@ -5,3 +5,6 @@ read -p "TELEGRAM_BOT_API_KEY: " TELEGRAM_BOT_API_KEY
 read -p "GEMINI_API_KEYS: " GEMINI_API_KEYS
 echo "TELEGRAM_BOT_API_KEY=$TELEGRAM_BOT_API_KEY" >>.env
 echo "GEMINI_API_KEYS=$GEMINI_API_KEYS" >>.env
+
+# Build docker image
+docker build -t gemini-tgbot .
