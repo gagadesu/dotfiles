@@ -1,11 +1,12 @@
 services:
   server:
-    image: gitea/gitea:1.21.11
+    image: gitea/gitea:latest
     container_name: gitea
     networks:
       - proxy
     ports:
       - 3522:3000
+      - 222:22
     labels:
      - "traefik.enable=true"
      - "traefik.http.routers.gitea.entrypoints=http"
@@ -40,11 +41,13 @@ services:
     image: postgres:14
     restart: always
     environment:
+      - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - POSTGRES_DB=${DATABASE_NAME}
     volumes:
       - postgres:/var/lib/postgresql/data
+    networks:
+      - proxy
 
 volumes:
   data:
