@@ -5,6 +5,7 @@
 {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
 
+{{/* work around unreliable hostname on darwin */}}
 {{- $hostname := .chezmoi.hostname -}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
@@ -31,18 +32,9 @@ encryption = "gpg"
 
 {{- if eq .chezmoi.os "linux" -}}
 {{-   if (or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu")) -}}
+{{-   $lxc := promptBool "Is this host on proxmox lxc? (y/n)" }}
 {{-   $docker := promptBool "Do you want to install Docker? (y/n)" }}
+  lxc = {{ $lxc }}
   docker = {{ $docker }}
 {{-   end -}}
-{{- end -}}
-
-# Whether proxmox lxc
-{{- if eq .chezmoi.os "linux" -}}
-{{-   $lxcScript := `./home/.check_lxc.sh` }}
-{{-   $lxcEnv := include $lxcScript }}
-{{-   if eq $lxcEnv "true" }}
-lxc = true
-{{-   else }}
-lxc = false
-{{-   end }}
 {{- end -}}
