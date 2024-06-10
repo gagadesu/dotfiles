@@ -35,3 +35,13 @@ encryption = "gpg"
   docker = {{ $docker }}
 {{-   end -}}
 {{- end -}}
+
+# Whether proxmox lxc
+{{- if eq .chezmoi.os "linux" }}
+{{-   $lxcEnv := (include "sh" "-c" "grep -q 'container=lxc' /proc/1/environ && echo true || echo false") }}
+{{-   if eq $lxcEnv "true\n" }}
+lxc = true
+{{-   else }}
+lxc = false
+{{-   end }}
+{{- end }}
