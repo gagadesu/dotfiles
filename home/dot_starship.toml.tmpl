@@ -80,9 +80,21 @@ truncate_to_repo = true
 truncation_symbol = "repo:"
 
 [character]
+{{- if eq .chezmoi.os "linux" }}
+{{-   if .lxc }}
+success_symbol = "[>  ](bold green)"
+error_symbol = "[x  ](bold red)"
+vicmd_symbol = "[<  ](bold green)"
+{{-   else }}
 success_symbol = "[>](bold green)"
 error_symbol = "[x](bold red)"
 vicmd_symbol = "[<](bold green)"
+{{-   end }}
+{{- else }}
+success_symbol = "[>](bold green)"
+error_symbol = "[x](bold red)"
+vicmd_symbol = "[<](bold green)"
+{{- end }}
 
 [cmd_duration]
 format = '\[[⏱ $duration]($style)\]'
