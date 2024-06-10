@@ -37,11 +37,12 @@ encryption = "gpg"
 {{- end -}}
 
 # Whether proxmox lxc
-{{- if eq .chezmoi.os "linux" }}
-{{-   $lxcEnv := (include "sh" "-c" "grep -q 'container=lxc' /proc/1/environ && echo true || echo false") }}
-{{-   if eq $lxcEnv "true\n" }}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   $lxcScript := `./home/.check_lxc.sh` }}
+{{-   $lxcEnv := include $lxcScript }}
+{{-   if eq $lxcEnv "true" }}
 lxc = true
 {{-   else }}
 lxc = false
 {{-   end }}
-{{- end }}
+{{- end -}}
