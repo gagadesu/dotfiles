@@ -14,7 +14,7 @@ services:
       - /Volumes/Fusion/media:/media
       {{- end }}
       {{- if eq .hostname "nas" }}
-      - /mnt/media:/media
+      - ${HOME}/media:/media
       {{- end }}
 
 volumes:
