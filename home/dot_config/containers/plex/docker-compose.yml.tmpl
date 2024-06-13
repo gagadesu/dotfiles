@@ -14,7 +14,7 @@ services:
       - /Volumes/Fusion/media:/media
       {{- end }}
       {{- if eq .hostname "home" }}
-      - ${HOME}/media:/media
+      - /mnt/pool/media:/media
       {{- end }}
 
 volumes:
