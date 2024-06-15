@@ -8,8 +8,9 @@ sudo -v
 
 # Install general packages
 sudo apt update
+sudo apt install gpg -y
 
-packages=("zoxide" "fzf" "curl" "wget" "net-tools" "zsh" "git" "tmux" "gpg" "ripgrep" "gcc")
+packages=("zoxide" "fzf" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc")
 
 for package in "${packages[@]}"; do
     if ! dpkg -l | grep -q "^ii  $package"; then
