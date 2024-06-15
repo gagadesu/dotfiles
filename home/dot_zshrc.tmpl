@@ -154,9 +154,6 @@ export TZ=$(readlink /etc/localtime | sed 's|.*/zoneinfo/||')
 export TZ=$(timedatectl show -p Timezone --value)
 {{- end }}
 export TZ=$(readlink /etc/localtime | awk -F'/zoneinfo/' '{print $2}')
-{{- if eq .hostname "net" }}
-export https_proxy=http://10.0.1.7:6152;export http_proxy=http://10.0.1.7:6152
-{{- end }}
 eval "$(zoxide init zsh)"
 alias zz="z -"
 alias cl="clear"
