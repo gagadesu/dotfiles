@@ -22,8 +22,8 @@ services:
       - TLS=gateway.icloud.com:443
       - PASSWORD=${PASSWORD}
 
-  # restarter:
-  #   image: docker:cli
-  #   volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
-  #   command: ["/bin/sh", "-c", "while true; do sleep 86400; docker restart app_app_1; done"]
-  #   restart: unless-stopped
+  restarter:
+    image: docker:cli
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    command: ["/bin/sh", "-c", "while true; do sleep 86400; docker restart app_app_1; done"]
+    restart: unless-stopped
