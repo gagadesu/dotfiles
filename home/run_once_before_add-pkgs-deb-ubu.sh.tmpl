@@ -10,7 +10,7 @@ sudo -v
 sudo apt update
 sudo apt install gpg -y
 
-packages=("zoxide" "fzf" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc")
+packages=("zoxide" "fzf" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc" "make")
 
 for package in "${packages[@]}"; do
     if ! dpkg -l | grep -q "^ii  $package"; then
