@@ -1,6 +1,6 @@
 services:
-  aria2-pro:
-    container_name: aria2-pro
+  aria2:
+    container_name: aria2
     image: p3terx/aria2-pro:latest
     environment:
       - PUID=${UID}
@@ -18,37 +18,62 @@ services:
       - TZ=${TZ}
     volumes:
       - config:/config
-      {{- if eq .osid "darwin" }}
-      - ${HOME}/Downloads:/downloads
-      {{- end }}
-      {{- if eq .chezmoi.os "linux" }}
       - ${HOME}/downloads:/downloads
-      {{- end }}
-    network_mode: host
-    # network_mode: bridge
-    # ports:
-    #   - 6800:6800
-    #   - 6888:6888
-    #   - 6888:6888/udp
+    # network_mode: host
+    ports:
+      - 6800:6800
+      - 6888:6888
+      - 6888:6888/udp
     restart: always
     logging:
       driver: json-file
       options:
         max-size: 1m
+    networks:
+      - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.aria2.entrypoints=http"
+     - "traefik.http.routers.aria2.rule=Host(`aria2.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.middlewares.aria2-https-redirect.redirectscheme.scheme=https"
+     - "traefik.http.routers.aria2.middlewares=aria2-https-redirect"
+     - "traefik.http.routers.aria2-secure.entrypoints=https"
+     - "traefik.http.routers.aria2-secure.rule=Host(`aria2.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.routers.aria2-secure.tls=true"
+     - "traefik.http.routers.aria2-secure.service=aria2"
+     - "traefik.http.services.aria2.loadbalancer.server.port=6800"
+     - "traefik.docker.network=proxy"
 
   ariang:
     container_name: ariang
     image: p3terx/ariang:latest
     command: --port 6880 --ipv6
-    network_mode: host
-    # network_mode: bridge
-    # ports:
-    # - 6880:6880
+    # network_mode: host
+    ports:
+    - 6880:6880
     restart: always
     logging:
       driver: json-file
       options:
         max-size: 1m
+    networks:
+      - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.ariang.entrypoints=http"
+     - "traefik.http.routers.ariang.rule=Host(`ariang.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.middlewares.ariang-https-redirect.redirectscheme.scheme=https"
+     - "traefik.http.routers.ariang.middlewares=ariang-https-redirect"
+     - "traefik.http.routers.ariang-secure.entrypoints=https"
+     - "traefik.http.routers.ariang-secure.rule=Host(`ariang.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.routers.ariang-secure.tls=true"
+     - "traefik.http.routers.ariang-secure.service=ariang"
+     - "traefik.http.services.ariang.loadbalancer.server.port=6880"
+     - "traefik.docker.network=proxy"
 
 volumes:
   config:
+
+networks:
+  proxy:
+    external: true
