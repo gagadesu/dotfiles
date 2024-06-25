@@ -74,6 +74,14 @@ http:
         - default-headers
       tls: {}
       service: grafana
+    istoreos:
+      entryPoints:
+        - "https"
+      rule: "Host(`istoreos.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: istoreos
     # pihole:
     #   entryPoints:
     #     - "https"
@@ -136,6 +144,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://10.0.1.5:3003"
+        passHostHeader: true
+    istoreos:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.6"
         passHostHeader: true
     {{- end }}
 
