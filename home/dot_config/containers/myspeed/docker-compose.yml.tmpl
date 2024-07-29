@@ -1,0 +1,30 @@
+services:
+  myspeed:
+    image: germannewsmaker/myspeed
+    container_name: myspeed
+    ports:
+      - "5216:5216"
+    volumes:
+      - myspeed:/myspeed/data
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.myspeed.entrypoints=http"
+     - "traefik.http.routers.myspeed.rule=Host(`myspeed.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.middlewares.myspeed-https-redirect.redirectscheme.scheme=https"
+     - "traefik.http.routers.myspeed.middlewares=myspeed-https-redirect"
+     - "traefik.http.routers.myspeed-secure.entrypoints=https"
+     - "traefik.http.routers.myspeed-secure.rule=Host(`myspeed.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+     - "traefik.http.routers.myspeed-secure.tls=true"
+     - "traefik.http.routers.myspeed-secure.service=myspeed"
+     - "traefik.http.services.myspeed.loadbalancer.server.port=5216"
+     - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  myspeed:
