@@ -11,10 +11,10 @@ ping () {
   /sbin/ping -c 5 $1 $2 $3 | nali
 }
 dig () {
-  dog $1 $2 $3 | nali
+  doggo $1 $2 $3 | nali
 }
 ding () {
-  dog $1 @1.1.1.1 | cut -d' ' -f6 | xargs ping -c 5 | nali
+  doggo $1 @1.1.1.1 | awk 'NR > 1 {print $5}' | xargs -I{} ping -c 5 {} | nali
 }
 
 # Print IP
