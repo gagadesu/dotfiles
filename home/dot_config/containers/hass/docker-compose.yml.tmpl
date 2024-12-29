@@ -1,11 +1,14 @@
 services:
   hass:
-    container_name: hass
     image: "ghcr.io/home-assistant/home-assistant:stable"
-    volumes:
-      - config:/config
-      - /etc/localtime:/etc/localtime:ro
+    container_name: hass
+    privileged: true
     restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
     network_mode: host
     # networks:
     #  - proxy
@@ -25,6 +28,3 @@ services:
 # networks:
 #   proxy:
 #     external: true
-
-volumes:
-  config:
