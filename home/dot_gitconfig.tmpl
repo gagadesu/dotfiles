@@ -12,7 +12,7 @@
 [commit]
 	gpgsign = true
 [gpg "ssh"]
-  {{- if eq .osid "linux-ubuntu" }}
+  {{- if or (eq .osid "linux-ubuntu") (eq .osid "linux-debian") }}
   allowedSignersFile = /home/gagadesu/.ssh/allowed_signers
   {{- end }}
   {{- if eq .osid "darwin" }}
