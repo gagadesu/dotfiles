@@ -4,6 +4,3 @@ zsh_history
 .alacritty.toml
 .hammerspoon/
 {{- end }}
-{{- if (or (eq .hostname "orc-chu-1") (eq .hostname "orc-chu-2")) }}
-.config/nvim/
-{{- end }}
