@@ -25,12 +25,12 @@ encryption = "gpg"
 [diff]
   command = "nvim"
   args = ["-d"]
+[source]
+  url = "git@github.com:gagadesu/dotfiles.git"
 [data]
   email = {{ $email | quote }}
   osid = {{ $osid | quote }}
   hostname = {{ $hostname | quote }}
-[source]
-  url = "git@github.com:gagadesu/dotfiles.git"
 
 {{- if eq .chezmoi.os "linux" -}}
 {{-   if (or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu")) -}}
