@@ -1,37 +1,40 @@
 [user]
   email = 16465863+gagadesu@users.noreply.github.com
   name = gagadesu
-{{- if eq .hostname "mbp" }}
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHP1Jezi2rAvN5t7Lfy69ZXJIV8ESztN5TOa4B8DwPcZ
-  # signingKey = CC2332077A5E59FE!
-{{- end }}
-{{- if eq .hostname "mini" }}
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKv1dTMfCP+sY9MYNR2/CB5qQ7ECPhrAS17poiKPfSfH
-{{- end }}
-{{- if eq .hostname "nas" }}
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7F4UfWU/si0rPsYFAq/mWM/YdKHR+YvD4u6lT+KRS6
-{{- end }}
-{{- if eq .hostname "rnd-lax-1" }}
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPkrFEz2Rwd3XBM4On1R+0wtP/ztxBnGExWk5/dz0mpd
-{{- end }}
+[core]
+	excludesFile = ~/.gitignore
+	editor = nvim
+[init]
+	defaultBranch = main
+[gpg]
+  format = ssh
+[commit]
+	gpgsign = true
+[gpg "ssh"]
+  {{- if eq .osid "linux-ubuntu" }}
+  allowedSignersFile = /home/gagadesu/.ssh/allowed_signers
+  {{- end }}
+  {{- if eq .osid "darwin" }}
+  allowedSignersFile = /Users/gagadesu/.ssh/allowed_signers
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  {{- end }}
+[maintenance]
+	repo = ~/.znap/fast-syntax-highlighting
+	repo = ~/.znap/zsh-autocomplete
+	repo = ~/.znap/zsh-autosuggestions
+	repo = ~/.znap/zsh-colored-man-pages
+	repo = ~/.znap/zsh-completions
+	repo = ~/.znap/zsh-snap
+  commit-graph = true
+  gc = true
 {{- if eq .osid "darwin" }}
 [http]
   proxy = http://127.0.0.1:6152
 [https]
   proxy = http://127.0.0.1:6152
 {{- end }}
-[core]
-	excludesFile = ~/.gitignore
-	editor = nvim
-[init]
-	defaultBranch = main
 {{- if eq .hostname "mbp" }}
-[gpg]
-  format = ssh
-[gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-[commit]
-	gpgsign = true
 [tag]
 	forcesignannotated = true
 [filter "lfs"]
@@ -42,23 +45,4 @@
 [credential]
 	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
-{{- end }}
-[maintenance]
-	repo = ~/.znap/fast-syntax-highlighting
-	repo = ~/.znap/zsh-autocomplete
-	repo = ~/.znap/zsh-autosuggestions
-	repo = ~/.znap/zsh-colored-man-pages
-	repo = ~/.znap/zsh-completions
-	repo = ~/.znap/zsh-snap
-  commit-graph = true
-  gc = true
-[credential "https://dev.azure.com"]
-	useHttpPath = true
-{{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") }}
-[credential "https://github.com"]
-  helper =
-  helper = !/usr/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-  helper =
-  helper = !/usr/bin/gh auth git-credential
 {{- end }}
