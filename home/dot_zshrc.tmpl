@@ -4,6 +4,7 @@
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
+. "$HOME/.local/share/../bin/env"
 {{- end }}
 
 {{- if eq .hostname "mini" }}
@@ -179,7 +180,7 @@ alias lh='ls -d .*' # show hidden files/directories only
 alias tgz='tar -czf' # compress file
 alias ugz='tar -xzf' # decompress file
 alias l="eza --sort Name"
-alias ll="eza --sort Name --long --octal-permissions --hyperlink"
+alias ll="eza --sort Name --long --octal-permissions --hyperlink --total-size"
 alias la="eza --sort Name --long --octal-permissions --hyperlink --all"
 alias lt="eza --sort Name --long --octal-permissions --hyperlink --tree"
 alias lta="eza --sort Name --long --octal-permissions --hyperlink --tree --all"
