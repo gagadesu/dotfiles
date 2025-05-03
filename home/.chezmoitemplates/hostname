@@ -5,6 +5,8 @@
 {{-     $hostname = "mbp" -}}
 {{-   else if eq $computerName "Thomas’ Mac mini" -}}
 {{-     $hostname = "mini" -}}
+{{-   else if eq $computerName "Mac mini" -}}
+{{-     $hostname = "mini-frst" -}}
 {{-   else -}}
 {{-     $hostname = $computerName -}}
 {{-   end -}}

@@ -18,13 +18,11 @@ HIST_STAMPS="yyyy-mm-dd"
 export TERM=xterm-256color
 export GREP_COLORS='ms=01;33'
 alias grep='grep --color=auto'
-
-{{- if eq .osid "darwin" }}
+{{ if eq .osid "darwin" }}
 # Added by OrbStack: command-line tools and integration
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
 {{- end }}
-
-{{- if eq .chezmoi.hostname "MBP" }}
+{{ if eq .chezmoi.hostname "MBP" }}
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh"
 {{- end }}

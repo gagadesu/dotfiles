@@ -1,7 +1,13 @@
-#zmodload zsh/zprof
 {{- if eq .hostname "mbp" }}
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
+
+#zmodload zsh/zprof
+
+# Ghostty shell integration for Zsh.
+if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
+    builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
+fi
 
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
 . "$HOME/.local/share/../bin/env"
@@ -21,7 +27,7 @@ setopt EXTENDED_GLOB
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $HOME/.znap/zsh-snap
 source $HOME/.znap/zsh-snap/znap.zsh
-znap source zsh-users/zsh-autosuggestions
+#znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-completions
 znap source ael-code/zsh-colored-man-pages
 {{- if eq .osid "darwin" }}
@@ -36,8 +42,10 @@ autoload -Uz compinit && compinit
 # starship
 #znap eval starship 'starship init zsh --print-full-init'
 #znap prompt starship
+{{ if ne .osid "darwin" }}
 export STARSHIP_CONFIG=$HOME/.starship.toml
 eval "$(starship init zsh)"
+{{- end }}
 {{ if eq .osid "darwin" }}
 # network
 export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152;export all_proxy=socks5://127.0.0.1:6153
@@ -129,10 +137,9 @@ alias clm="colima"
 #export LIMA_WORKDIR=/home/gagadesu.linux
 
 # aliases
-alias ala="alacritty"
 alias dasl="sudo rm -rf /private/var/log/asl/*.asl"
 alias ts="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-alias rud="cd ~/Developer/rime-ice && git pull origin main"
+alias rime="rime-install iDvel/rime-ice:others/recipes/all_dicts"
 alias yabairl='launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"'
 alias yabairc='nvim ~/.config/yabai/yabairc'
 
@@ -209,10 +216,24 @@ source $HOME/.zsh_functions
 # unset __conda_setup
 # # <<< conda initialize <<<
 
+# oh-my-posh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  #eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/zen.toml)"
+  eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/tokyonight_storm.omp.json)"
+  # eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/ref.toml)"
+fi
+
+# bun completions
+[ -s "/Users/gagadesu/.bun/_bun" ] && source "/Users/gagadesu/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+#zprof
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
 {{- end }}
 {{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-debian") }}
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 {{- end }}
-#zprof
