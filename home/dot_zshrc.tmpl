@@ -148,7 +148,9 @@ export PATH=$HOME/Developer/work/tools/gradle-2.4/bin:$PATH
 {{- end }}
 
 # general
-#{{ template "hostname" . }}
+{{- if ne .hostname "mbp" }}
+{{ template "hostname" . }}
+{{- end }}
 {{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") }}
 export PATH=$(find $HOME/.local/bin -type d -name "bin" -print0 | xargs -0 printf "%s:" | sed 's/:$//'):$PATH
 {{- end }}
