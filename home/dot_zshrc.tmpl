@@ -13,7 +13,7 @@ export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libe
 . "$HOME/.local/share/../bin/env"
 {{- end }}
 
-{{- if eq .hostname "mini" }}
+{{- if or (eq .hostname "mini") (eq .hostname "mini-frst") }}
 #export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 {{- end }}
