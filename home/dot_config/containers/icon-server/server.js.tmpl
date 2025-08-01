@@ -1,0 +1,74 @@
+const express = require('express');
+const fs = require('fs-extra');
+const path = require('path');
+const sharp = require('sharp');
+const si = require('simple-icons');
+const axios = require('axios');
+const png2ico = require('png2ico');
+
+const ICON_DIR = '/srv/icons';
+const app = express();
+
+// Fallback: GitHub org avatar or Clearbit Logo API
+async function fetchFallback(service) {
+  try {
+    const resp = await axios.get(`https://api.github.com/orgs/${service}`, { headers: { 'User-Agent': 'icon-service' } });
+    const avatarUrl = resp.data.avatar_url + '&s=256';
+    const img = await axios.get(avatarUrl, { responseType: 'arraybuffer' });
+    return Buffer.from(img.data);
+  } catch (_) {
+    const url = `https://logo.clearbit.com/${service}.com?size=256`;
+    const img = await axios.get(url, { responseType: 'arraybuffer' });
+    return Buffer.from(img.data);
+  }
+}
+
+app.get('/:service/favicon.:ext', async (req, res) => {
+  const { service, ext } = req.params;
+  if (!['svg', 'png', 'ico'].includes(ext)) return res.sendStatus(404);
+  const dir = path.join(ICON_DIR, service);
+  await fs.ensureDir(dir);
+  const filePath = path.join(dir, `favicon.${ext}`);
+
+  // Serve cached if exists
+  if (await fs.pathExists(filePath)) {
+    return res.sendFile(filePath);
+  }
+
+  try {
+    // Try Simple Icons
+    const iconKey = service.charAt(0).toUpperCase() + service.slice(1);
+    const iconMeta = si.get(iconKey);
+    let buf;
+
+    if (iconMeta) {
+      const svg = Buffer.from(iconMeta.svg);
+      if (ext === 'svg') {
+        await fs.writeFile(filePath, svg);
+        return res.type('image/svg+xml').send(svg);
+      }
+      // SVG -> PNG
+      buf = await sharp(svg).resize(256).png().toBuffer();
+    } else {
+      // Fallback
+      buf = await fetchFallback(service);
+      buf = await sharp(buf).resize(256).png().toBuffer();
+    }
+
+    if (ext === 'png') {
+      await fs.writeFile(filePath, buf);
+      return res.type('image/png').send(buf);
+    }
+
+    // PNG -> ICO
+    const icoBuf = await png2ico(buf);
+    await fs.writeFile(filePath, icoBuf);
+    return res.type('image/x-icon').send(icoBuf);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
+
+const port = process.env.PORT || 80;
+app.listen(port, () => console.log(`Icon service listening on port ${port}`));
