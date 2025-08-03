@@ -11,12 +11,7 @@ services:
       - VERSION=docker
     volumes:
       - config:/config:rw
-      {{- if eq .hostname "mini" }}
-      - /Volumes/Fusion/media:/media
-      {{- end }}
-      {{- if eq .hostname "home" }}
-      - /mnt/pool/media:/media
-      {{- end }}
+      - /mnt/media:/media
 
 volumes:
   config:
