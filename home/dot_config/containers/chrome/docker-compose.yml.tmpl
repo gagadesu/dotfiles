@@ -1,0 +1,10 @@
+services:
+  chrome-novnc:
+    image: vital987/chrome-novnc:latest
+    container_name: chrome-novnc
+    environment:
+      - PORT=8081
+      - VNC_PASS=123456
+    ports:
+      - "8081:8081"
+    restart: unless-stopped

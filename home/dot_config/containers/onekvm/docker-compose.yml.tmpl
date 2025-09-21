@@ -1,0 +1,15 @@
+services:
+  kvmd:
+    image: silentwind0/kvmd
+    container_name: kvmd
+    restart: unless-stopped
+    devices:
+      - /dev/video0:/dev/video0
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    ports:
+      - "8080:8080"
+      - "4430:4430"
+      - "5900:5900"
+      - "623:623"
+    stdin_open: true     # 等价于 -it
+    tty: true            # 允许伪终端
