@@ -17,22 +17,14 @@ http:
         - default-headers
       tls: {}
       service: ros
-    r2:
+    pve:
       entryPoints:
         - "https"
-      rule: "Host(`r2.home.gachca.com`)"
+      rule: "Host(`pve.home.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
-      service: r2
-    nuc:
-      entryPoints:
-        - "https"
-      rule: "Host(`nuc.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: nuc
+      service: pve
     sw:
       entryPoints:
         - "https"
@@ -134,15 +126,10 @@ http:
         servers:
           - url: "http://10.0.1.1"
         passHostHeader: true
-    r2:
+    pve:
       loadBalancer:
         servers:
           - url: "https://10.0.1.2:8006"
-        passHostHeader: true
-    nuc:
-      loadBalancer:
-        servers:
-          - url: "https://10.0.1.4:8006"
         passHostHeader: true
     sw:
       loadBalancer:
