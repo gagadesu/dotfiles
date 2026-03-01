@@ -3,49 +3,83 @@ services:
     image: diygod/rsshub:chromium-bundled
     container_name: rsshub
     restart: always
+
+    environment:
+      NODE_ENV: production
+      TZ: Asia/Tokyo
+
+      CACHE_TYPE: redis
+      REDIS_URL: "redis://redis:6379/"
+      CACHE_EXPIRE: "21600"
+
+      ACCESS_KEY: "${RSSHUB_ACCESS_KEY}"
+
+      LOGGER_LEVEL: "info"
+      NO_LOGFILES: "true"
+      DEBUG_INFO: "false"
+
+    depends_on:
+      redis:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS \"http://localhost:1200/healthz?key=$$ACCESS_KEY\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+    networks:
+      - proxy
+      - rsshub_internal
+
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
+
       - "traefik.http.routers.rsshub.entrypoints=http"
-      - "traefik.http.routers.rsshub.rule=Host(`rsshub.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+      - "traefik.http.routers.rsshub.rule=Host(`rsshub.home.gachca.com`)"
       - "traefik.http.middlewares.rsshub-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.rsshub.middlewares=rsshub-https-redirect"
+
       - "traefik.http.routers.rsshub-secure.entrypoints=https"
-      - "traefik.http.routers.rsshub-secure.rule=Host(`rsshub.${HOSTNAME}.${MY_DOMAIN_NAME}`)"
+      - "traefik.http.routers.rsshub-secure.rule=Host(`rsshub.home.gachca.com`)"
       - "traefik.http.routers.rsshub-secure.tls=true"
       - "traefik.http.routers.rsshub-secure.service=rsshub"
+
       - "traefik.http.services.rsshub.loadbalancer.server.port=1200"
       - "traefik.docker.network=proxy"
-    networks:
-      - proxy
-    ports:
-      - '1200:1200'
-    environment:
-      NODE_ENV: production
-      CACHE_TYPE: redis
-      REDIS_URL: 'redis://redis:6379/'
-      # PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'  # marked
-      # INITIUM_USERNAME: ''
-      # INITIUM_PASSWORD: ''
-    depends_on:
-      - redis
-      # - browserless  # marked
 
-  # browserless:
-  #     image: browserless/chrome
-  #     restart: always
-  #     ulimits:
-  #       core:
-  #         hard: 0
-  #         soft: 0
+    security_opt:
+      - no-new-privileges:true
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
+    container_name: rsshub_redis
     restart: always
-    networks:
-      - proxy
+
+    command:
+      - redis-server
+      - "--appendonly"
+      - "no"
+      - "--save"
+      - ""
+      - "--maxmemory"
+      - "256mb"
+      - "--maxmemory-policy"
+      - "allkeys-lru"
+
     volumes:
       - redis-data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+    networks:
+      - rsshub_internal
 
 volumes:
   redis-data:
@@ -53,3 +87,5 @@ volumes:
 networks:
   proxy:
     external: true
+  rsshub_internal:
+    driver: bridge
