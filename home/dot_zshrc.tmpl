@@ -1,7 +1,4 @@
 {{- if eq .hostname "mbp" }}
-# Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-
 #zmodload zsh/zprof
 
 # Ghostty shell integration for Zsh.
@@ -27,7 +24,7 @@ setopt EXTENDED_GLOB
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $HOME/.znap/zsh-snap
 source $HOME/.znap/zsh-snap/znap.zsh
-#znap source zsh-users/zsh-autosuggestions
+znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-completions
 znap source ael-code/zsh-colored-man-pages
 {{- if eq .osid "darwin" }}
@@ -232,9 +229,10 @@ fi
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
 #zprof
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
 {{- end }}
 {{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-debian") }}
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
