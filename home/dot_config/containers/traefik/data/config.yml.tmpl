@@ -114,6 +114,14 @@ http:
         - default-headers
       tls: {}
       service: myspeed
+    rm10:
+      entryPoints:
+        - "https"
+      rule: "Host(`rm10.home.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: rm10
 
   services:
     immortalwrt:
@@ -185,6 +193,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://10.0.1.3:5216"
+        passHostHeader: true
+    rm10:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.182"
         passHostHeader: true
 
   middlewares:
