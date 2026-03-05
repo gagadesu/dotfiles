@@ -7,3 +7,7 @@ zsh_history
 {{- if (or (eq .hostname "orc-chu-1") (eq .hostname "orc-chu-2")) }}
 .config/nvim/
 {{- end }}
+{{- if ne .hostname "mbp" }}
+.config/containers/traefik/.env.tpl
+.config/containers/traefik/deploy.sh
+{{- end }}

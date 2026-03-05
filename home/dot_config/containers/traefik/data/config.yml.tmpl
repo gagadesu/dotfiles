@@ -1,6 +1,7 @@
 ---
 http:
   routers:
+{{ if eq .hostname "home" }}
     immortalwrt:
       entryPoints:
         - "https"
@@ -97,15 +98,6 @@ http:
         - default-headers
       tls: {}
       service: istoreos
-    # pihole:
-    #   entryPoints:
-    #     - "https"
-    #   rule: "Host(`pihole.home.gachca.com`)"
-    #   middlewares:
-    #     - default-headers
-    #     - addprefix-pihole
-    #   tls: {}
-    #   service: pihole
     myspeed:
       entryPoints:
         - "https"
@@ -122,8 +114,10 @@ http:
         - default-headers
       tls: {}
       service: rm10
+{{ end }}
 
   services:
+{{ if eq .hostname "home" }}
     immortalwrt:
       loadBalancer:
         servers:
@@ -149,11 +143,6 @@ http:
         servers:
           - url: "http://10.0.1.3:3000"
         passHostHeader: true
-    # pihole:
-    #   loadBalancer:
-    #     servers:
-    #       - url: "http://10.0.1.12:80"
-    #     passHostHeader: true
     nas:
       loadBalancer:
         servers:
@@ -199,11 +188,9 @@ http:
         servers:
           - url: "https://10.0.1.182"
         passHostHeader: true
+{{ end }}
 
   middlewares:
-    addprefix-pihole:
-      addPrefix:
-        prefix: "/admin"
     https-redirect:
       redirectScheme:
         scheme: https

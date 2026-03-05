@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Prompt user for input
+read -p "Enter VPS Hostname: " VPS_HOST
+
+VPS="${VPS_HOST}"
+REMOTE_DIR="~/.config/containers/traefik"
+
+echo "🚀 Connecting to $VPS..."
+
+echo "📁 Ensuring remote directories exist..."
+ssh $VPS "mkdir -p $REMOTE_DIR/data"
+
+echo "🔒 Fetching secrets from 1Password and writing to remote .env file..."
+op inject -i .env.tpl | ssh $VPS "cat > $REMOTE_DIR/.env"
+
+echo "⚙️ Configuring acme.json permissions and checking proxy network..."
+ssh $VPS "
+    cd $REMOTE_DIR
+    touch ./data/acme.json
+    chmod 600 ./data/acme.json
+    
+    if ! docker network inspect proxy &> /dev/null; then
+        echo '🌐 Creating docker proxy network...'
+        docker network create proxy
+    else
+        echo '🌐 Proxy network already exists, skipping...'
+    fi
+"
+
+echo "✅ Initialization complete!"
