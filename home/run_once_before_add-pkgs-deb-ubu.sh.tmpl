@@ -21,19 +21,22 @@ for package in "${packages[@]}"; do
     fi
 done
 
-# Install nvim(v0.10.0)
-if ! command -v nvim &> /dev/null; then
-    echo "Neovim is not installed. Installing Neovim v0.10.0..."
-    wget -P ${HOME}/.local/bin https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
-    tar xzf ${HOME}/.local/bin/nvim-linux64.tar.gz -C ${HOME}/.local/bin
-
-    if command -v nvim &> /dev/null; then
-        echo "Neovim v0.10.0 installed successfully."
-        rm ${HOME}/.local/bin/nvim-linux64.tar.gz
-        echo "Downloaded tar.gz file removed."
+# Install nvim
+mkdir -p "${HOME}/.local/bin"
+if ! command -v nvim &> /dev/null && [ ! -x "${HOME}/.local/bin/nvim" ]; then
+    echo "Neovim is not installed. Fetching and installing the latest stable release..."
+    TMP_DIR=$(mktemp -d)
+    if curl -sSLf -o "${TMP_DIR}/nvim.tar.gz" "https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz"; then
+        tar xzf "${TMP_DIR}/nvim.tar.gz" --strip-components=1 -C "${HOME}/.local"
+        if [ -x "${HOME}/.local/bin/nvim" ]; then
+            echo "Neovim installed successfully."
+        else
+            echo "Neovim installation failed during extraction."
+        fi
     else
-        echo "Neovim installation failed."
+        echo "Failed to download Neovim. Check your network or GitHub access."
     fi
+    rm -rf "${TMP_DIR}"
 else
     echo "Neovim is already installed."
 fi
