@@ -5,7 +5,7 @@ http:
     immortalwrt:
       entryPoints:
         - "https"
-      rule: "Host(`immortalwrt.home.gachca.com`)"
+      rule: "Host(`immortalwrt.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -13,7 +13,7 @@ http:
     ros:
       entryPoints:
         - "https"
-      rule: "Host(`ros.home.gachca.com`)"
+      rule: "Host(`ros.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -21,7 +21,7 @@ http:
     pve:
       entryPoints:
         - "https"
-      rule: "Host(`pve.home.gachca.com`)"
+      rule: "Host(`pve.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -29,7 +29,7 @@ http:
     sw:
       entryPoints:
         - "https"
-      rule: "Host(`sw.home.gachca.com`)"
+      rule: "Host(`sw.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -37,7 +37,7 @@ http:
     adguard:
       entryPoints:
         - "https"
-      rule: "Host(`adguard.home.gachca.com`)"
+      rule: "Host(`adguard.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -45,7 +45,7 @@ http:
     nas:
       entryPoints:
         - "https"
-      rule: "Host(`nas.home.gachca.com`)"
+      rule: "Host(`nas.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -53,7 +53,7 @@ http:
     ui:
       entryPoints:
         - "https"
-      rule: "Host(`ui.home.gachca.com`)"
+      rule: "Host(`ui.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -61,7 +61,7 @@ http:
     haos:
       entryPoints:
         - "https"
-      rule: "Host(`haos.home.gachca.com`)"
+      rule: "Host(`haos.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -69,23 +69,15 @@ http:
     plex:
       entryPoints:
         - "https"
-      rule: "Host(`plex.home.gachca.com`)"
+      rule: "Host(`plex.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
       service: plex
-    jellyfin:
-      entryPoints:
-        - "https"
-      rule: "Host(`jellyfin.home.gachca.com`)"
-      middlewares:
-        - default-headers
-      tls: {}
-      service: jellyfin
     grafana:
       entryPoints:
         - "https"
-      rule: "Host(`grafana.home.gachca.com`)"
+      rule: "Host(`grafana.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -93,7 +85,7 @@ http:
     istoreos:
       entryPoints:
         - "https"
-      rule: "Host(`istoreos.home.gachca.com`)"
+      rule: "Host(`istoreos.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -101,7 +93,7 @@ http:
     myspeed:
       entryPoints:
         - "https"
-      rule: "Host(`myspeed.home.gachca.com`)"
+      rule: "Host(`myspeed.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
@@ -109,13 +101,32 @@ http:
     rm10:
       entryPoints:
         - "https"
-      rule: "Host(`rm10.home.gachca.com`)"
+      rule: "Host(`rm10.${HOSTNAME}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
       service: rm10
 {{ end }}
-
+{{ if or (eq .hostname "home") (eq .hostname "orc-chu-2") }}
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.${HOSTNAME}.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: jellyfin
+{{ end }}
+{{ if eq .hostname "home" }}
+    jellyfin2:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin2.${HOSTNAME}.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: jellyfin2
+{{ end }}
   services:
 {{ if eq .hostname "home" }}
     immortalwrt:
@@ -163,11 +174,6 @@ http:
         servers:
           - url: "http://10.0.1.5:32400"
         passHostHeader: true
-    jellyfin:
-      loadBalancer:
-        servers:
-          - url: "http://10.0.1.5:8096"
-        passHostHeader: true
     grafana:
       loadBalancer:
         servers:
@@ -189,7 +195,20 @@ http:
           - url: "https://10.0.1.182"
         passHostHeader: true
 {{ end }}
-
+{{ if or (eq .hostname "home") (eq .hostname "orc-chu-2") }}
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "{{ if eq .hostname "home" }}http://10.0.1.5:8096{{ else }}http://:8096{{ end }}"
+        passHostHeader: true
+{{ end }}
+{{ if eq .hostname "home" }}
+    jellyfin2:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.15:8096"
+        passHostHeader: true
+{{ end }}
   middlewares:
     https-redirect:
       redirectScheme:

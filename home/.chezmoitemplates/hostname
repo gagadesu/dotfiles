@@ -3,10 +3,10 @@
 {{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
 {{-   if eq $computerName "Thomas’ MacBook Pro" -}}
 {{-     $hostname = "mbp" -}}
-{{-   else if eq $computerName "Thomas’ Mac mini" -}}
-{{-     $hostname = "mini" -}}
-{{-   else if eq $computerName "Mac mini" -}}
-{{-     $hostname = "mini-frst" -}}
+{{-   else if eq $computerName "Mac mini M4" -}}
+{{-     $hostname = "mini-m4" -}}
+{{-   else if eq $computerName "Mac mini M1" -}}
+{{-     $hostname = "mini-m1" -}}
 {{-   else -}}
 {{-     $hostname = $computerName -}}
 {{-   end -}}
