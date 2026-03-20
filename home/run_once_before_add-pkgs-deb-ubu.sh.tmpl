@@ -10,6 +10,20 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 echo "Updating APT package index..."
 sudo apt-get update -y
 
+# Fix locale
+echo "Checking locale configuration..."
+if ! dpkg -l locales &>/dev/null; then
+    sudo apt-get install -y locales
+fi
+if ! grep -q "^en_US.UTF-8" /etc/locale.gen 2>/dev/null; then
+    echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen > /dev/null
+fi
+sudo locale-gen
+sudo update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+echo "Locale set to: $(locale | grep ^LANG)"
+
 # Install general packages
 echo "Checking general packages..."
 packages=("gpg" "zoxide" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc" "make" "unzip" "xz-utils" "tar" "ca-certificates")
