@@ -1,7 +1,7 @@
 ---
 http:
   routers:
-{{ if eq .hostname "home" }}
+{{- if eq .hostname "home" }}
     immortalwrt:
       entryPoints:
         - "https"
@@ -98,6 +98,14 @@ http:
         - default-headers
       tls: {}
       service: myspeed
+    rm1:
+      entryPoints:
+        - "https"
+      rule: "Host(`rm1.{{ .hostname }}.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: rm1
     rm10:
       entryPoints:
         - "https"
@@ -106,8 +114,8 @@ http:
         - default-headers
       tls: {}
       service: rm10
-{{ end }}
-{{ if or (eq .hostname "home") (eq .hostname "orc-chu-2") }}
+{{- end }}
+{{- if or (eq .hostname "home") (eq .hostname "orc-chu-2") }}
     jellyfin:
       entryPoints:
         - "https"
@@ -116,8 +124,8 @@ http:
         - default-headers
       tls: {}
       service: jellyfin
-{{ end }}
-{{ if eq .hostname "home" }}
+{{- end }}
+{{- if eq .hostname "home" }}
     jellyfin2:
       entryPoints:
         - "https"
@@ -126,9 +134,10 @@ http:
         - default-headers
       tls: {}
       service: jellyfin2
-{{ end }}
+{{- end }}
+
   services:
-{{ if eq .hostname "home" }}
+{{- if eq .hostname "home" }}
     immortalwrt:
       loadBalancer:
         servers:
@@ -189,26 +198,32 @@ http:
         servers:
           - url: "http://10.0.1.3:5216"
         passHostHeader: true
+    rm1:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.106"
+        passHostHeader: true
     rm10:
       loadBalancer:
         servers:
           - url: "https://10.0.1.182"
         passHostHeader: true
-{{ end }}
-{{ if or (eq .hostname "home") (eq .hostname "orc-chu-2") }}
+{{- end }}
+{{- if or (eq .hostname "home") (eq .hostname "orc-chu-2") }}
     jellyfin:
       loadBalancer:
         servers:
           - url: "{{ if eq .hostname "home" }}http://10.0.1.5:8096{{ else }}http://100.116.153.118:8096{{ end }}"
         passHostHeader: true
-{{ end }}
-{{ if eq .hostname "home" }}
+{{- end }}
+{{- if eq .hostname "home" }}
     jellyfin2:
       loadBalancer:
         servers:
           - url: "http://10.0.1.15:8096"
         passHostHeader: true
-{{ end }}
+{{- end }}
+
   middlewares:
     https-redirect:
       redirectScheme:
