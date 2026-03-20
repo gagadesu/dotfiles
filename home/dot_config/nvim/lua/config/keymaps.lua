@@ -13,3 +13,7 @@ keymap("i", "kj", "<ESC>", opts)
 -- Visual --
 -- Paste without overwriting the clipboard register
 keymap("v", "p", '"_dP', opts)
+
+-- Move selected lines up/down in visual mode
+keymap("v", "J", ":m '>+1<CR>gv=gv", opts)
+keymap("v", "K", ":m '<-2<CR>gv=gv", opts)
