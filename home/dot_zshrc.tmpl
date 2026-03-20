@@ -70,6 +70,11 @@ unset ZSH_AUTOSUGGEST_USE_ASYNC
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-completions
 znap source ael-code/zsh-colored-man-pages
+
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
 znap source jeffreytse/zsh-vi-mode
 
 {{- if eq .osid "darwin" }}
