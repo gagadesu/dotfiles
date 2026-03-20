@@ -55,6 +55,7 @@ if ! command -v fzf >/dev/null 2>&1 || ! fzf --version | grep -q -E "0\.(5[3-9]|
     
     if [ -n "$FZF_URL" ]; then
         TMP_DIR=$(mktemp -d)
+        mkdir -p "${HOME}/.local/bin"
         if curl -fsSL -o "${TMP_DIR}/fzf.tar.gz" "$FZF_URL"; then
             tar xzf "${TMP_DIR}/fzf.tar.gz" -C "${HOME}/.local/bin"
             echo "fzf installed successfully."
