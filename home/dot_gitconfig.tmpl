@@ -28,11 +28,17 @@
 	repo = ~/.znap/zsh-snap
   commit-graph = true
   gc = true
-{{- if eq .osid "darwin" }}
+{{- if eq .hostname "mbp" }}
 [http]
   proxy = http://127.0.0.1:6152
 [https]
   proxy = http://127.0.0.1:6152
+[diff]
+  tool = nvimdiff
+[difftool]
+  prompt = false
+[difftool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 {{- end }}
 {{- if eq .hostname "mbp" }}
 [tag]

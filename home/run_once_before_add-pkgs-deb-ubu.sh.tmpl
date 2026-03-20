@@ -12,7 +12,7 @@ sudo apt-get update -y
 
 # Install general packages
 echo "Checking general packages..."
-packages=("gpg" "zoxide" "fzf" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc" "make")
+packages=("gpg" "zoxide" "fzf" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc" "make" "unzip" "xz-utils" "tar" "ca-certificates")
 missing_packages=()
 
 for pkg in "${packages[@]}"; do
