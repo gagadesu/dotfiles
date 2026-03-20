@@ -1,4 +1,4 @@
-{{- if eq .chezmoi.hostname "MBP" }}
+{{- if eq .hostname "MBP" }}
 # Upload with transfer.sh
 tmp_up () {
   local download_url=$(curl --upload-file ./$1 https://transfer.sh/$1)
@@ -125,3 +125,27 @@ function fp() {
     fp
   fi
 }
+
+{{- if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") }}
+function updnvim() {
+    echo "🚀 Fetching the latest stable Neovim..."
+    local TMP_DIR=$(mktemp -d)
+    if curl -fsSL -o "${TMP_DIR}/nvim.tar.gz" "https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz"; then
+        echo "🧹 Cleaning up old Neovim installations to prevent conflicts..."
+        rm -rf "${HOME}/.local/bin/nvim-linux64"
+        rm -rf "${HOME}/.local/nvim-linux64"
+        rm -f "${HOME}/.local/bin/nvim"
+        echo "📦 Extracting and installing the new version..."
+        mkdir -p "${HOME}/.local"
+        tar xzf "${TMP_DIR}/nvim.tar.gz" --strip-components=1 -C "${HOME}/.local"
+        if [ -x "${HOME}/.local/bin/nvim" ]; then
+            echo "✅ Neovim successfully updated to: $(${HOME}/.local/bin/nvim --version | head -n 1)"
+        else
+            echo "❌ Extraction seemed to fail. Executable not found."
+        fi
+    else
+        echo "❌ Failed to download Neovim. Check your network."
+    fi
+    rm -rf "${TMP_DIR}"
+}
+{{- end }}

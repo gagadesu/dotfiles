@@ -90,10 +90,12 @@ terminal_background = 'p:t-background'
       '{{ "{{ if gt .Ahead 0 }}" }}p:terminal-blue{{ "{{ end }}" }}',
       '{{ "{{ if gt .Behind 0 }}" }}p:celeste-blue{{ "{{ end }}" }}'
     ]
-    template = '({{ "{{ .HEAD}}" }})'
+    template = '({{ "{{ .HEAD }}" }}{{ "{{ if .BranchStatus }}" }} {{ "{{ .BranchStatus }}" }}{{ "{{ end }}" }}{{ "{{ if .Staging.Changed }}" }}  {{ "{{ .Staging.String }}" }}{{ "{{ end }}" }}{{ "{{ if .Working.Changed }}" }}  {{ "{{ .Working.String }}" }}{{ "{{ end }}" }}{{ "{{ if gt .StashCount 0 }}" }} 󰆓 {{ "{{ .StashCount }}" }}{{ "{{ end }}" }})'
     [blocks.segments.properties]
       fetch_status = true
       branch_icon = ' '
+      fetch_stash_count = true
+      fetch_upstream_icon = true
 
   [[blocks.segments]]
     type = 'status'
