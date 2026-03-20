@@ -215,11 +215,11 @@ source $HOME/.zsh_functions
 if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
     builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 fi
+{{- end }}
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
     eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/omp.toml)"
 fi
-{{- end }}
 
 # =============================================================================
 # 8. Syntax Highlighting (Must be loaded LAST)
