@@ -12,7 +12,7 @@ sudo apt-get update -y
 
 # Install general packages
 echo "Checking general packages..."
-packages=("gpg" "zoxide" "fzf" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc" "make" "unzip" "xz-utils" "tar" "ca-certificates")
+packages=("gpg" "zoxide" "curl" "wget" "net-tools" "zsh" "git" "tmux" "ripgrep" "gcc" "make" "unzip" "xz-utils" "tar" "ca-certificates")
 missing_packages=()
 
 for pkg in "${packages[@]}"; do
@@ -26,6 +26,33 @@ if [ ${#missing_packages[@]} -gt 0 ]; then
     sudo apt-get install -y "${missing_packages[@]}"
 else
     echo "All general packages are already installed."
+fi
+
+# Install latest fzf
+if ! command -v fzf >/dev/null 2>&1 || ! fzf --version | grep -q -E "0\.(5[3-9]|[6-9][0-9])"; then
+    echo "Installing/Updating fzf to a newer version..."
+    
+    ARCH=$(uname -m)
+    if [ "$ARCH" = "x86_64" ]; then FZF_ARCH="amd64"
+    elif [ "$ARCH" = "aarch64" ]; then FZF_ARCH="arm64"
+    else FZF_ARCH="amd64"; fi
+
+    FZF_URL=$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | grep "browser_download_url" | grep "linux_${FZF_ARCH}.tar.gz" | cut -d '"' -f 4)
+    
+    if [ -n "$FZF_URL" ]; then
+        TMP_DIR=$(mktemp -d)
+        if curl -fsSL -o "${TMP_DIR}/fzf.tar.gz" "$FZF_URL"; then
+            tar xzf "${TMP_DIR}/fzf.tar.gz" -C "${HOME}/.local/bin"
+            echo "fzf installed successfully."
+        else
+            echo "Failed to download fzf." >&2
+        fi
+        rm -rf "${TMP_DIR}"
+    else
+        echo "Failed to fetch fzf release URL from GitHub API." >&2
+    fi
+else
+    echo "fzf is already up to date."
 fi
 
 # Install Neovim
