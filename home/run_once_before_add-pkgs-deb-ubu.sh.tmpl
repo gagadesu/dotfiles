@@ -10,19 +10,22 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 echo "Updating APT package index..."
 sudo apt-get update -y
 
-# Fix locale
+# Fix Locale
 echo "Checking locale configuration..."
-if ! dpkg -l locales &>/dev/null; then
-    sudo apt-get install -y locales
+if ! locale -a 2>/dev/null | grep -qi "en_US.utf8"; then
+    echo "Locale en_US.UTF-8 not found. Generating..."
+    if grep -qi "ubuntu" /etc/os-release; then
+        sudo apt-get install -y language-pack-en
+    else
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+        sudo sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen
+        sudo locale-gen
+    fi
 fi
-if ! grep -q "^en_US.UTF-8" /etc/locale.gen 2>/dev/null; then
-    echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen > /dev/null
-fi
-sudo locale-gen
 sudo update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-echo "Locale set to: $(locale | grep ^LANG)"
+echo "✅ Locale set to: $(locale | grep ^LANG)"
 
 # Install general packages
 echo "Checking general packages..."
