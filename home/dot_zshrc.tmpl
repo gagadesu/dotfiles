@@ -14,6 +14,8 @@ export TZ=$(timedatectl show -p Timezone --value)
 export TZ=$(readlink /etc/localtime | awk -F'/zoneinfo/' '{print $2}')
 {{- end }}
 
+export IP={{ .ip | quote }}
+
 # Base PATH
 export PATH="$HOME/.local/bin:$PATH"
 

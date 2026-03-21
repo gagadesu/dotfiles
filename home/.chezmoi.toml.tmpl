@@ -1,5 +1,15 @@
 {{- $email := promptStringOnce . "email" "Email address" -}}
 
+{{- $ip := "" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $ip = output "sh" "-c" "ipconfig getifaddr en0 || ipconfig getifaddr en1" | trim -}}
+{{- else if eq .chezmoi.os "linux" -}}
+{{-   $ip = output "sh" "-c" "hostname -I | awk '{print $1}'" | trim -}}
+{{- end -}}
+{{- if eq $ip "" -}}
+{{-   $ip = promptStringOnce . "ip" "Local IP address" -}}
+{{- end -}}
+
 {{- $osid := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
 {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
@@ -31,6 +41,7 @@ encryption = "gpg"
   email = {{ $email | quote }}
   osid = {{ $osid | quote }}
   hostname = {{ $hostname | quote }}
+  ip = {{ $ip | quote }}
 
 {{- if eq .chezmoi.os "linux" -}}
 {{-   if (or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu")) -}}
