@@ -12,12 +12,18 @@ services:
     volumes:
       {{- if eq .hostname "media" }}
       - /mnt/media/shares:/media
+      - /mnt/pikpak/media:/pikpak_media
       {{- end }}
       {{- if eq .hostname "home" }}
       - /mnt/media/porns:/media
       {{- end }}
       - config:/config
       - cache:/cache
+    {{- if eq .hostname "media" }}
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    {{- end }}
 
 volumes:
   config:
