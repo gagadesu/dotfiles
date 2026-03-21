@@ -50,14 +50,14 @@ http:
         - default-headers
       tls: {}
       service: nas
-    ui:
+    uos:
       entryPoints:
         - "https"
-      rule: "Host(`ui.{{ .hostname }}.gachca.com`)"
+      rule: "Host(`uos.{{ .hostname }}.gachca.com`)"
       middlewares:
         - default-headers
       tls: {}
-      service: ui
+      service: uos
     haos:
       entryPoints:
         - "https"
@@ -168,10 +168,10 @@ http:
         servers:
           - url: "https://10.0.1.9"
         passHostHeader: true
-    ui:
+    uos:
       loadBalancer:
         servers:
-          - url: "https://10.0.1.3:8443"
+          - url: "https://10.0.1.4:11443"
         passHostHeader: true
     haos:
       loadBalancer:
