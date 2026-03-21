@@ -27,6 +27,9 @@ terminal_background = 'p:t-background'
   blue-black = '#565f89'
   terminal-black = '#414868'
   t-background = 'p:main-bg'
+  debian-red = '#d70a53'
+  ubuntu-orange = '#e95420'
+  macos-purple = '#9b59b6'
 
 # ==========================================
 # Secondary Prompt
@@ -52,6 +55,15 @@ terminal_background = 'p:t-background'
   alignment = 'left'
 
 {{- if ne .hostname "mbp" }}
+{{- $sessionColor := "p:terminal-green" -}}
+{{- if eq .osid "linux-debian" -}}
+{{-   $sessionColor = "p:debian-red" -}}
+{{- else if eq .osid "linux-ubuntu" -}}
+{{-   $sessionColor = "p:ubuntu-orange" -}}
+{{- else if eq .osid "darwin" -}}
+{{-   $sessionColor = "p:macos-purple" -}}
+{{- end -}}
+
   [[blocks.segments]]
     type = 'os'
     style = 'plain'
@@ -61,7 +73,7 @@ terminal_background = 'p:t-background'
   [[blocks.segments]]
     type = 'session'
     style = 'plain'
-    foreground = 'p:terminal-green'
+    foreground = '{{ $sessionColor }}'
     template = '{{ "{{ .UserName }}" }}@{{ "{{ .HostName }}" }} '
 {{- end }}
 
