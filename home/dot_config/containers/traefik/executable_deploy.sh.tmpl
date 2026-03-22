@@ -17,8 +17,14 @@ op inject -i .env.tpl | ssh $VPS "cat > $REMOTE_DIR/.env"
 echo "⚙️ Configuring acme.json permissions and checking proxy network..."
 ssh $VPS "
     cd $REMOTE_DIR
-    touch ./data/acme.json
-    chmod 600 ./data/acme.json
+    if [ ! -f ./data/acme.json ]; then
+        echo '📄 Creating acme.json...'
+        touch ./data/acme.json
+        chmod 600 ./data/acme.json
+    else
+        echo '📄 acme.json already exists, ensuring permissions...'
+        chmod 600 ./data/acme.json
+    fi
     
     if ! docker network inspect proxy &> /dev/null; then
         echo '🌐 Creating docker proxy network...'
