@@ -1,7 +1,6 @@
 .zsh_history
 zsh_history
 {{- if eq .chezmoi.os "linux" }}
-.alacritty.toml
 .hammerspoon/
 {{- end }}
 {{- if (or (eq .hostname "orc-chu-1") (eq .hostname "orc-chu-2")) }}
@@ -10,4 +9,5 @@ zsh_history
 {{- if ne .hostname "mbp" }}
 .config/containers/traefik/.env.tpl
 .config/containers/traefik/deploy.sh
+.config/ghostty/
 {{- end }}
