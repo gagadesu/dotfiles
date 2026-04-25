@@ -2,6 +2,14 @@
 http:
   routers:
 {{- if eq .hostname "home" }}
+    ui:
+      entryPoints:
+        - "https"
+      rule: "Host(`ui.{{ .hostname }}.gachca.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: ui
     immortalwrt:
       entryPoints:
         - "https"
@@ -138,6 +146,11 @@ http:
 
   services:
 {{- if eq .hostname "home" }}
+    ui:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.1"
+        passHostHeader: true
     immortalwrt:
       loadBalancer:
         servers:
