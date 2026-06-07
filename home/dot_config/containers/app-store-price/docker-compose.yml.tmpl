@@ -1,0 +1,7 @@
+services:
+  app-store-price:
+    image: ghcr.io/hypooo/app-store-price:latest
+    container_name: app-store-price
+    restart: unless-stopped
+    ports:
+      - "18080:8080"
