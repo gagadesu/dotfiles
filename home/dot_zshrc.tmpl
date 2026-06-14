@@ -73,11 +73,15 @@ znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-completions
 znap source ael-code/zsh-colored-man-pages
 
+# The NEX engine can misinterpret bracketed-paste terminators over SSH.
+ZVM_READKEY_ENGINE=zle
+znap source jeffreytse/zsh-vi-mode
+
+# Register these after zsh-vi-mode so its widgets cannot replace them.
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
-znap source jeffreytse/zsh-vi-mode
 
 {{- if eq .osid "darwin" }}
 znap source thirteen37/fzf-brew

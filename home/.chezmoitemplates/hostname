@@ -11,4 +11,4 @@
 {{-     $hostname = $computerName -}}
 {{-   end -}}
 {{- end -}}
-export HOSTNAME={{ $hostname }}
+export HOSTNAME={{ $hostname -}}
