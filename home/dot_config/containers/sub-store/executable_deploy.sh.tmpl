@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REMOTE_DIR='.config/containers/sub-store'
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <ssh-host>" >&2
+  exit 1
+fi
+
+SSH_HOST=$1
+
+command -v op >/dev/null 2>&1 || {
+  echo "1Password CLI (op) is required on this Mac." >&2
+  exit 1
+}
+
+echo "Injecting Sub-Store secrets from 1Password..."
+op inject -i "$SCRIPT_DIR/.env.tpl" |
+  ssh "$SSH_HOST" 'set -eu
+REMOTE_DIR="$HOME/.config/containers/sub-store"
+TMP_FILE="$REMOTE_DIR/.env.tmp.$$"
+umask 077
+mkdir -p "$REMOTE_DIR/data"
+trap "rm -f '\''$TMP_FILE'\''" EXIT HUP INT TERM
+cat > "$TMP_FILE"
+grep -Eq "^SUB_STORE_BACKEND_PATH=/.+" "$TMP_FILE"
+chmod 600 "$TMP_FILE"
+mv "$TMP_FILE" "$REMOTE_DIR/.env"
+trap - EXIT HUP INT TERM'
+
+echo "Sub-Store environment installed on $SSH_HOST:$REMOTE_DIR/.env"
