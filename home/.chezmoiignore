@@ -9,5 +9,7 @@ zsh_history
 {{- if ne .hostname "mbp" }}
 .config/containers/traefik/.env.tpl
 .config/containers/traefik/deploy.sh
+.config/containers/sub-store/.env.tpl
+.config/containers/sub-store/deploy.sh
 .config/ghostty/
 {{- end }}
