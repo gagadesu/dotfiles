@@ -90,7 +90,7 @@ autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
 
 {{- if eq .osid "darwin" }}
-znap source thirteen37/fzf-brew
+command -v fzf >/dev/null && znap source thirteen37/fzf-brew
 {{- end }}
 
 fpath=($HOME/.znap/zsh-completions/src $fpath)
@@ -99,7 +99,7 @@ autoload -Uz compinit && compinit
 # =============================================================================
 # 5. Tool Initializations (Go, Python, Node, Ruby, etc.)
 # =============================================================================
-eval "$(zoxide init zsh)"
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
 {{- if eq .osid "darwin" }}
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -234,7 +234,7 @@ if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
 fi
 {{- end }}
 
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && command -v oh-my-posh >/dev/null; then
     eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/omp.toml)"
 fi
 
