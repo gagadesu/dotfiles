@@ -22,6 +22,12 @@ export PATH="$HOME/.local/bin:$PATH"
 {{- if eq .osid "darwin" }}
 # Homebrew Base
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+# 1Password SSH agent
+export OP_SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+if [ -S "$OP_SSH_AUTH_SOCK" ]; then
+    export SSH_AUTH_SOCK="$OP_SSH_AUTH_SOCK"
+fi
 {{- end }}
 
 {{- if eq .hostname "mbp" }}
@@ -103,9 +109,8 @@ export FZF_DEFAULT_OPTS="--reverse --border"
 {{- if eq .hostname "mbp" }}
 # GPG & 1Password
 export GPG_TTY=$(tty)
-gpgconf --launch gpg-agent
-source $HOME/.config/op/plugins.sh
-export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+command -v gpgconf >/dev/null && gpgconf --launch gpg-agent
+[ -f "$HOME/.config/op/plugins.sh" ] && source "$HOME/.config/op/plugins.sh"
 
 # Development Environments
 export GOPATH="$HOME/.go"
@@ -145,6 +150,7 @@ alias nv="nvim"
 alias path="print -l $path"
 alias cz="chezmoi"
 alias czet="chezmoi execute-template"
+alias cld="claude"
 
 alias -g ...="../.."
 alias -g ....="../../.."
