@@ -3,6 +3,8 @@
 
 set -euo pipefail
 
+export PATH="${HOME}/.local/bin:${PATH}"
+
 # Keep sudo alive
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -44,6 +46,60 @@ if [ ${#missing_packages[@]} -gt 0 ]; then
 else
     echo "All general packages are already installed."
 fi
+
+# Install lazydocker from the latest upstream release.
+if ! command -v lazydocker >/dev/null 2>&1; then
+    echo "Installing lazydocker..."
+
+    install_lazydocker() (
+        set -e
+
+        local arch latest_url latest_tag version archive_url temp_dir
+
+        case "$(uname -m)" in
+            x86_64) arch="x86_64" ;;
+            i386|i686) arch="x86" ;;
+            aarch64|arm64) arch="arm64" ;;
+            armv6*) arch="armv6" ;;
+            armv7*) arch="armv7" ;;
+            *)
+                echo "Unsupported architecture for lazydocker: $(uname -m)" >&2
+                exit 1
+                ;;
+        esac
+
+        latest_url=$(curl -fsSL -o /dev/null -w '%{url_effective}' \
+            https://github.com/jesseduffield/lazydocker/releases/latest)
+        latest_tag="${latest_url##*/}"
+        case "$latest_tag" in
+            v*) version="${latest_tag#v}" ;;
+            *)
+                echo "Could not determine the latest lazydocker release." >&2
+                exit 1
+                ;;
+        esac
+
+        archive_url="https://github.com/jesseduffield/lazydocker/releases/download/${latest_tag}/lazydocker_${version}_Linux_${arch}.tar.gz"
+        temp_dir=$(mktemp -d)
+        trap 'rm -rf "$temp_dir"' EXIT
+
+        curl -fsSL --retry 3 -o "${temp_dir}/lazydocker.tar.gz" "$archive_url"
+        tar -tzf "${temp_dir}/lazydocker.tar.gz" lazydocker >/dev/null
+        tar -xzf "${temp_dir}/lazydocker.tar.gz" -C "$temp_dir" lazydocker
+        mkdir -p "${HOME}/.local/bin"
+        install -m 0755 "${temp_dir}/lazydocker" "${HOME}/.local/bin/lazydocker"
+    )
+
+    install_lazydocker
+else
+    echo "lazydocker is already installed at: $(command -v lazydocker)"
+fi
+
+if ! command -v lazydocker >/dev/null 2>&1; then
+    echo "lazydocker installation verification failed." >&2
+    exit 1
+fi
+lazydocker --version
 
 # Install latest fzf
 if ! command -v fzf >/dev/null 2>&1 || ! fzf --version | grep -q -E "0\.(5[3-9]|[6-9][0-9])"; then
@@ -162,4 +218,4 @@ fi
 
 echo "Ubuntu/Debian setup complete!"
 
-{{- end -}}
+{{ end -}}
