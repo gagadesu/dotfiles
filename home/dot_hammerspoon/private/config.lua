@@ -53,3 +53,9 @@ hstype_keys = { "alt", "V" }
 
 -- Toggle Hammerspoon console
 hsconsole_keys = { "alt", "Z" }
+
+-- Keep the Hammerspoon CLI available for diagnostics and automation.
+require("hs.ipc")
+
+-- Correct Swish's top-half geometry on FlipGo's hinged display.
+flipGoHinge = require("private/flipgo_hinge")
