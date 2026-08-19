@@ -54,7 +54,28 @@ terminal_background = 'p:t-background'
   type = 'prompt'
   alignment = 'left'
 
+{{ if ne .hostname "mbp" }}
+{{- $sessionColor := "p:terminal-green" -}}
+{{- if eq .osid "linux-debian" -}}
+{{-   $sessionColor = "p:debian-red" -}}
+{{- else if eq .osid "linux-ubuntu" -}}
+{{-   $sessionColor = "p:ubuntu-orange" -}}
+{{- else if eq .osid "darwin" -}}
+{{-   $sessionColor = "p:macos-purple" -}}
+{{- end }}
 
+  [[blocks.segments]]
+    type = 'os'
+    style = 'plain'
+    foreground = 'p:white-blue'
+    template = '{{ "{{" }} .Icon }} '
+
+  [[blocks.segments]]
+    type = 'session'
+    style = 'plain'
+    foreground = '{{ $sessionColor }}'
+    template = '{{ "{{" }} .UserName }}@{{ "{{" }} .HostName }} '
+{{- end }}
 
   [[blocks.segments]]
     type = 'text'
