@@ -1,1 +1,6 @@
 install.sh
+
+# ~/.gitignore excludes bin/ globally; keep this chezmoi-managed command trackable.
+!home/dot_local/
+!home/dot_local/bin/
+!home/dot_local/bin/executable_aic2

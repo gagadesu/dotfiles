@@ -52,6 +52,7 @@ eval "$("$brew_bin" shellenv)"
 formulae=(
     eza
     fzf
+    gh
     lazydocker
     neovim
     oh-my-posh
@@ -74,7 +75,7 @@ else
     echo "All common macOS formulae are already installed."
 fi
 
-commands=(eza fzf lazydocker nvim oh-my-posh rg tmux zoxide)
+commands=(eza fzf gh lazydocker nvim oh-my-posh rg tmux zoxide)
 for tool in "${commands[@]}"; do
     if ! command -v "$tool" >/dev/null 2>&1; then
         echo "Command verification failed: ${tool}" >&2
